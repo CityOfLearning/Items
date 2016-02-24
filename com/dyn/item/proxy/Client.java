@@ -1,13 +1,19 @@
 package com.dyn.item.proxy;
 
 import com.dyn.item.items.Flags;
+import com.dyn.item.reference.Reference;
 import com.dyn.server.packets.PacketDispatcher;
 import com.dyn.server.packets.client.ReturnFlagMessage;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 
@@ -23,6 +29,12 @@ public class Client implements Proxy {
 
 	@Override
 	public void init() {
+		
+		/*Item itemBlockSimple = GameRegistry.findItem(Reference.MOD_ID, "chunk_loader");
+		ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation(new ResourceLocation("dyn", "textures/blocks/chunkloader.png"), "normal");
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(itemBlockSimple, 0,
+				itemModelResourceLocation);*/
+		
 		FMLCommonHandler.instance().bus().register(this);
 
 		MinecraftForge.EVENT_BUS.register(this);

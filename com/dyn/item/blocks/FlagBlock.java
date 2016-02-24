@@ -4,20 +4,31 @@ import java.util.List;
 import java.util.Random;
 
 import com.dyn.item.ItemMod;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBanner.BlockBannerStanding;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 
-public class FlagBlock extends Block {
+public class FlagBlock extends BlockBannerStanding {
+	public FlagBlock() {
+		super();
+		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
+		this.setCreativeTab(CreativeTabs.tabMisc);
+		this.setHardness(0.1F);
+		this.setResistance(6000000.0F);
+		this.setStepSound(soundTypeCloth);
+		this.setUnlocalizedName("ctf_flags");
+	}
+	
+	
+}
 
-	public static final String[] types = new String[] { "red", "green", "blue", "yellow" };
+	/*public static final String[] types = new String[] { "red", "green", "blue", "yellow" };
 	@SideOnly(Side.CLIENT)
 	private IIcon[] icons;
 	
@@ -33,9 +44,9 @@ public class FlagBlock extends Block {
 	}
     
 
-    /**
+    *//**
      * Gets the block's texture. Args: side, meta
-     */
+     *//*
     @Override
 	@SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
@@ -44,37 +55,37 @@ public class FlagBlock extends Block {
         return this.icons[i];
     }
 
-    /**
+    *//**
      * Returns the item to drop on block destruction.
-     */
+     *//*
     @Override
     public Item getItemDropped(int metadata, Random random, int fortune) {
     	System.out.println("Metadata: " + metadata);
         return new ItemStack(ItemMod.flags, 1, metadata).getItem();
     }
 
-    /**
+    *//**
      * Returns the quantity of items to drop on block destruction.
-     */
+     *//*
     @Override
 	public int quantityDropped(Random random)
     {
         return 1;
     }
     
-    /**
+    *//**
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
+     *//*
     @Override
 	public boolean isOpaqueCube()
     {
         return false;
     }
     
-    /**
+    *//**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
+     *//*
     @Override
 	public boolean renderAsNormalBlock()
     {
@@ -82,9 +93,9 @@ public class FlagBlock extends Block {
     }
     
     
-    /**
+    *//**
      * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
+     *//*
     @Override
 	public int damageDropped(int damage)
     {
@@ -92,9 +103,9 @@ public class FlagBlock extends Block {
         return damage;
     }
 
-    /**
+    *//**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
+     *//*
     @Override
 	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List list)
@@ -117,3 +128,4 @@ public class FlagBlock extends Block {
         }
     }
 }
+*/

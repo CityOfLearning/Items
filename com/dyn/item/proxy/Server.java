@@ -4,8 +4,8 @@ import com.dyn.item.items.Flags;
 import com.dyn.server.packets.PacketDispatcher;
 import com.dyn.server.packets.client.ReturnFlagMessage;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;

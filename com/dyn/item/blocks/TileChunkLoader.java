@@ -1,8 +1,11 @@
-package com.dyn.chunkloader;
+package com.dyn.item.blocks;
 
-import cpw.mods.fml.common.FMLLog;
+import net.minecraftforge.fml.common.FMLLog;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.dyn.item.ItemMod;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
@@ -13,7 +16,7 @@ public class TileChunkLoader extends TileEntity {
 
 	public List<ChunkCoordIntPair> getLoadArea() {
 		List<ChunkCoordIntPair> loadArea = new LinkedList();
-		ChunkCoordIntPair chunkCoords = new ChunkCoordIntPair((this.xCoord >> 4), (this.zCoord >> 4));
+		ChunkCoordIntPair chunkCoords = new ChunkCoordIntPair((this.getPos().getX() >> 4), (this.getPos().getZ() >> 4));
 
 		loadArea.add(chunkCoords);
 		return loadArea;
@@ -23,7 +26,7 @@ public class TileChunkLoader extends TileEntity {
 	public void validate() {
 		super.validate();
 		if ((!this.worldObj.isRemote) && (this.chunkTicket == null)) {
-			ForgeChunkManager.Ticket ticket = ForgeChunkManager.requestTicket(ChunkLoaderMod.instance, this.worldObj,
+			ForgeChunkManager.Ticket ticket = ForgeChunkManager.requestTicket(ItemMod.instance, this.worldObj,
 					ForgeChunkManager.Type.NORMAL);
 			if (ticket != null) {
 				forceChunkLoading(ticket);
@@ -41,7 +44,7 @@ public class TileChunkLoader extends TileEntity {
 		stopChunkLoading();
 		this.chunkTicket = ticket;
 		for (ChunkCoordIntPair coord : getLoadArea()) {
-			ChunkLoaderMod.logger.info(String.format("Force loading chunk %s in %s",
+			ItemMod.logger.info(String.format("Force loading chunk %s in %s",
 					new Object[] { coord, this.worldObj.provider.getClass() }), new Object[0]);
 			ForgeChunkManager.forceChunk(this.chunkTicket, coord);
 		}

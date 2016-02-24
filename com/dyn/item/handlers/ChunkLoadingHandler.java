@@ -1,10 +1,11 @@
-package com.dyn.chunkloader.handler;
+package com.dyn.item.handlers;
 
 import java.util.List;
 
-import com.dyn.chunkloader.TileChunkLoader;
+import com.dyn.item.blocks.TileChunkLoader;
 
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
@@ -17,7 +18,7 @@ public class ChunkLoadingHandler implements LoadingCallback {
 			int x = ticket.getModData().getInteger("xCoord");
 			int y = ticket.getModData().getInteger("yCoord");
 			int z = ticket.getModData().getInteger("zCoord");
-			TileEntity te = world.getTileEntity(x, y, z);
+			TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 			if ((te instanceof TileChunkLoader)) {
 				((TileChunkLoader) te).forceChunkLoading(ticket);
 			}
