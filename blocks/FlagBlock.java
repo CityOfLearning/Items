@@ -1,131 +1,59 @@
 package com.dyn.item.blocks;
 
-import java.util.List;
-import java.util.Random;
-
-import com.dyn.item.ItemMod;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBanner.BlockBannerStanding;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.BlockBanner;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
 
-public class FlagBlock extends BlockBannerStanding {
+public class FlagBlock extends BlockBanner {
+
 	public FlagBlock() {
 		super();
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
 		this.setCreativeTab(CreativeTabs.tabMisc);
 		this.setHardness(0.1F);
 		this.setResistance(6000000.0F);
 		this.setStepSound(soundTypeCloth);
 		this.setUnlocalizedName("ctf_flags");
+
+		this.setDefaultState(this.blockState.getBaseState().withProperty(ROTATION, Integer.valueOf(0)));
 	}
-	
-	
-}
 
-	/*public static final String[] types = new String[] { "red", "green", "blue", "yellow" };
-	@SideOnly(Side.CLIENT)
-	private IIcon[] icons;
-	
-	public FlagBlock() {
-		super(Material.cloth);
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
-		this.setCreativeTab(CreativeTabs.tabMisc);
-		this.setHardness(0.1F);
-		this.setResistance(6000000.0F);
-		this.setStepSound(soundTypeCloth);
-		this.setBlockName("ctfBlock");
-		this.setBlockTextureName("dyn:ctf_flags");
+	@Override
+	protected BlockState createBlockState() {
+		return new BlockState(this, new IProperty[] { ROTATION });
 	}
-    
 
-    *//**
-     * Gets the block's texture. Args: side, meta
-     *//*
-    @Override
-	@SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
-    {
-    	int i = MathHelper.clamp_int(meta, 0, types.length-1);
-        return this.icons[i];
-    }
+	/**
+	 * Convert the BlockState into the correct metadata value
+	 */
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return ((Integer) state.getValue(ROTATION)).intValue();
+	}
 
-    *//**
-     * Returns the item to drop on block destruction.
-     *//*
-    @Override
-    public Item getItemDropped(int metadata, Random random, int fortune) {
-    	System.out.println("Metadata: " + metadata);
-        return new ItemStack(ItemMod.flags, 1, metadata).getItem();
-    }
+	/**
+	 * Convert the given metadata into a BlockState for this Block
+	 */
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(ROTATION, Integer.valueOf(meta));
+	}
 
-    *//**
-     * Returns the quantity of items to drop on block destruction.
-     *//*
-    @Override
-	public int quantityDropped(Random random)
-    {
-        return 1;
-    }
-    
-    *//**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     *//*
-    @Override
-	public boolean isOpaqueCube()
-    {
-        return false;
-    }
-    
-    *//**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     *//*
-    @Override
-	public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-    
-    
-    *//**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     *//*
-    @Override
-	public int damageDropped(int damage)
-    {
-    	System.out.println("Block Damage amt: " + damage);
-        return damage;
-    }
+	/**
+	 * Called when a neighboring block changes.
+	 */
+	@Override
+	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state,
+			Block neighborBlock) {
+		if (!worldIn.getBlockState(pos.down()).getBlock().getMaterial().isSolid()) {
+			this.dropBlockAsItem(worldIn, pos, state, 0);
+			worldIn.setBlockToAir(pos);
+		}
 
-    *//**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     *//*
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List list)
-    {
-        list.add(new ItemStack(item, 1, 0));
-        list.add(new ItemStack(item, 1, 1));
-        list.add(new ItemStack(item, 1, 2));
-        list.add(new ItemStack(item, 1, 3));
-    }
-
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister)
-    {
-        this.icons = new IIcon[types.length];
-
-        for (int i = 0; i < this.icons.length; ++i)
-        {
-            this.icons[i] = iconRegister.registerIcon(this.getTextureName() + "_" + types[i]);
-        }
-    }
+		super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
+	}
 }
-*/
