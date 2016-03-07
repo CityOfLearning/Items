@@ -46,8 +46,8 @@ public enum FlagTypes {
 
 	private MapColor mapColor;
 
-	private FlagTypes(int meta, int dyeDamage, String name, String unlocalizedName,
-			MapColor mapColorIn, EnumChatFormatting chatColor) {
+	private FlagTypes(int meta, int dyeDamage, String name, String unlocalizedName, MapColor mapColorIn,
+			EnumChatFormatting chatColor) {
 		this.meta = meta;
 		this.flagDamage = dyeDamage;
 		this.name = name;

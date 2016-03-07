@@ -41,9 +41,9 @@ public class Client implements Proxy {
 		 * register(itemBlockSimple, 0, itemModelResourceLocation);
 		 */
 
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
+		/*Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
 				.register(Item.getItemFromBlock(ItemMod.chunkloader), 0, new ModelResourceLocation(
-						/* Reference.MOD_ID + */"dyn:" + ItemMod.chunkloader.getUnlocalizedName(), "inventory"));
+						 Reference.MOD_ID + "dyn:" + ItemMod.chunkloader.getUnlocalizedName(), "inventory"));*/
 		FMLCommonHandler.instance().bus().register(this);
 
 		MinecraftForge.EVENT_BUS.register(this);

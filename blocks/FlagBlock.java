@@ -47,8 +47,7 @@ public class FlagBlock extends BlockBanner {
 	 * Called when a neighboring block changes.
 	 */
 	@Override
-	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state,
-			Block neighborBlock) {
+	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
 		if (!worldIn.getBlockState(pos.down()).getBlock().getMaterial().isSolid()) {
 			this.dropBlockAsItem(worldIn, pos, state, 0);
 			worldIn.setBlockToAir(pos);
