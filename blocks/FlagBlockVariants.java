@@ -11,8 +11,8 @@ public class FlagBlockVariants extends ItemBlock {
 	// name)
 	public FlagBlockVariants(Block block) {
 		super(block);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
+		setMaxDamage(0);
+		setHasSubtypes(true);
 	}
 
 	@Override

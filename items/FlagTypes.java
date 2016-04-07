@@ -49,34 +49,34 @@ public enum FlagTypes {
 	private FlagTypes(int meta, int dyeDamage, String name, String unlocalizedName, MapColor mapColorIn,
 			EnumChatFormatting chatColor) {
 		this.meta = meta;
-		this.flagDamage = dyeDamage;
+		flagDamage = dyeDamage;
 		this.name = name;
 		this.unlocalizedName = unlocalizedName;
-		this.mapColor = mapColorIn;
+		mapColor = mapColorIn;
 	}
 
 	public int getFlagDamage() {
-		return this.flagDamage;
+		return flagDamage;
 	}
 
 	public MapColor getMapColor() {
-		return this.mapColor;
+		return mapColor;
 	}
 
 	public int getMetadata() {
-		return this.meta;
+		return meta;
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public String getUnlocalizedName() {
-		return this.unlocalizedName;
+		return unlocalizedName;
 	}
 
 	@Override
 	public String toString() {
-		return this.unlocalizedName;
+		return unlocalizedName;
 	}
 }

@@ -13,13 +13,13 @@ public class FlagBlock extends BlockBanner {
 
 	public FlagBlock() {
 		super();
-		this.setCreativeTab(CreativeTabs.tabMisc);
-		this.setHardness(0.1F);
-		this.setResistance(6000000.0F);
-		this.setStepSound(soundTypeCloth);
-		this.setUnlocalizedName("ctf_flags");
+		setCreativeTab(CreativeTabs.tabMisc);
+		setHardness(0.1F);
+		setResistance(6000000.0F);
+		setStepSound(soundTypeCloth);
+		setUnlocalizedName("ctf_flags");
 
-		this.setDefaultState(this.blockState.getBaseState().withProperty(ROTATION, Integer.valueOf(0)));
+		setDefaultState(blockState.getBaseState().withProperty(ROTATION, Integer.valueOf(0)));
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class FlagBlock extends BlockBanner {
 	 */
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(ROTATION, Integer.valueOf(meta));
+		return getDefaultState().withProperty(ROTATION, Integer.valueOf(meta));
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class FlagBlock extends BlockBanner {
 	@Override
 	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
 		if (!worldIn.getBlockState(pos.down()).getBlock().getMaterial().isSolid()) {
-			this.dropBlockAsItem(worldIn, pos, state, 0);
+			dropBlockAsItem(worldIn, pos, state, 0);
 			worldIn.setBlockToAir(pos);
 		}
 

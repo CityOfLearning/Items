@@ -18,11 +18,11 @@ public class Flags extends Item {
 	// "blue", "yellow" };
 
 	public Flags() {
-		this.setMaxStackSize(1);
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
-		this.setCreativeTab(CreativeTabs.tabMisc);
-		this.setUnlocalizedName("flags");
+		setMaxStackSize(1);
+		setHasSubtypes(true);
+		setMaxDamage(0);
+		setCreativeTab(CreativeTabs.tabMisc);
+		setUnlocalizedName("flags");
 		// this.setTextureName("dyn:ctf_flags");
 	}
 

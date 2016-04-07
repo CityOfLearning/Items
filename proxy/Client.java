@@ -1,11 +1,7 @@
 package com.dyn.item.proxy;
 
-import com.dyn.item.ItemMod;
 import com.dyn.item.items.Flags;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
@@ -41,9 +37,12 @@ public class Client implements Proxy {
 		 * register(itemBlockSimple, 0, itemModelResourceLocation);
 		 */
 
-		/*Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
-				.register(Item.getItemFromBlock(ItemMod.chunkloader), 0, new ModelResourceLocation(
-						 Reference.MOD_ID + "dyn:" + ItemMod.chunkloader.getUnlocalizedName(), "inventory"));*/
+		/*
+		 * Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
+		 * .register(Item.getItemFromBlock(ItemMod.chunkloader), 0, new
+		 * ModelResourceLocation( Reference.MOD_ID + "dyn:" +
+		 * ItemMod.chunkloader.getUnlocalizedName(), "inventory"));
+		 */
 		FMLCommonHandler.instance().bus().register(this);
 
 		MinecraftForge.EVENT_BUS.register(this);
