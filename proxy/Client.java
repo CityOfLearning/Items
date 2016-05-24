@@ -1,51 +1,41 @@
 package com.dyn.item.proxy;
 
-import com.dyn.item.items.Flags;
+import com.dyn.item.blocks.cmdblock.StudentCommandBlockLogic;
+import com.dyn.item.gui.command.StudentComamndGui;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Client implements Proxy {
 
-	@SubscribeEvent
-	public void dropEvent(ItemTossEvent event) {
-		if ((event.player != null) && (event.entityItem != null) && (event.entityItem.getEntityItem() != null)) {
-			ItemStack is = event.entityItem.getEntityItem();
-			if (is.getItem() instanceof Flags) {
-				event.setCanceled(true);
-				for (int i = 0; i < event.player.inventory.getSizeInventory(); i++) {
-					if (event.player.inventory.getStackInSlot(i) == null) {
-						event.player.inventory.setInventorySlotContents(i, is);
-						break;
-					}
-				}
-			}
-		}
+	@Override
+	public void init() {
+		// MinecraftForge.EVENT_BUS.register(this);
+
+		// This is currently necessary in order to make your block render
+		// properly when it is an item (i.e. in the inventory
+		// or in your hand or thrown on the ground).
+		// Minecraft knows to look for the item model based on the
+		// GameRegistry.registerBlock. However the registration of
+		// the model for each item is normally done by
+		// RenderItem.registerItems(), and this is not currently aware
+		// of any extra items you have created. Hence you have to do it
+		// manually. This will probably change in future.
+		// It must be done in the init phase, not preinit, and must be done on
+		// client only.
+		Item itemBlockSimple = GameRegistry.findItem("dynitems", "student_command_block");
+		ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation("dynitems:student_command_block",
+				"inventory");
+		final int DEFAULT_ITEM_SUBTYPE = 0;
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(itemBlockSimple, DEFAULT_ITEM_SUBTYPE,
+				itemModelResourceLocation);
 	}
 
 	@Override
-	public void init() {
-
-		/*
-		 * Item itemBlockSimple = GameRegistry.findItem(Reference.MOD_ID,
-		 * "chunk_loader"); ModelResourceLocation itemModelResourceLocation =
-		 * new ModelResourceLocation("dynitems:chunk_loader", "inventory");
-		 * Minecraft.getMinecraft().getRenderItem().getItemModelMesher().
-		 * register(itemBlockSimple, 0, itemModelResourceLocation);
-		 */
-
-		/*
-		 * Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
-		 * .register(Item.getItemFromBlock(ItemMod.chunkloader), 0, new
-		 * ModelResourceLocation( Reference.MOD_ID + "dyn:" +
-		 * ItemMod.chunkloader.getUnlocalizedName(), "inventory"));
-		 */
-		FMLCommonHandler.instance().bus().register(this);
-
-		MinecraftForge.EVENT_BUS.register(this);
+	public void openStudentCommandGui(StudentCommandBlockLogic cmdBlockLogic) {
+		Minecraft.getMinecraft().displayGuiScreen(new StudentComamndGui(cmdBlockLogic));
 	}
 
 	/**

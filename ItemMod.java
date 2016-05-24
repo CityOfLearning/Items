@@ -1,11 +1,13 @@
 package com.dyn.item;
 
-import org.apache.logging.log4j.Logger;
-
+import com.dyn.DYNServerMod;
+import com.dyn.item.blocks.cmdblock.StudentCommandBlock;
 import com.dyn.item.proxy.Proxy;
 import com.dyn.item.reference.MetaData;
 import com.dyn.item.reference.Reference;
+import com.dyn.item.tileentity.TileEntityStudentCommandBlock;
 
+import net.minecraft.block.Block;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModMetadata;
@@ -13,6 +15,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 public class ItemMod {
@@ -22,19 +25,34 @@ public class ItemMod {
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
 	public static Proxy proxy;
 
-	public static Logger logger;
-
-	/*
-	 * public static Item flags; public static Block flagBlock; public static
-	 * Block chunkloader;
-	 */
-
 	@Mod.Metadata(Reference.MOD_ID)
 	public ModMetadata metadata;
 
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		proxy.init();
+
+		// each instance of your block should have a name that is unique within
+		// your mod. use lower case.
+		Block blockTileEntityData = new StudentCommandBlock().setBlockUnbreakable().setResistance(6000000.0F)
+				.setUnlocalizedName("student_command_block");
+		GameRegistry.registerBlock(blockTileEntityData, "student_command_block");
+		// you don't need to register an item corresponding to the block,
+		// GameRegistry.registerBlock does this automatically.
+		GameRegistry.registerTileEntity(TileEntityStudentCommandBlock.class, "student_command_block_te");
+
+		/*
+		 * printerBlock = new
+		 * BlockPrinter().setHardness(0.2F).setStepSound(Block.soundTypePiston).
+		 * setUnlocalizedName("PrinterBlock");
+		 * GameRegistry.registerBlock(printerBlock, "PrinterBlock");
+		 *
+		 *
+		 * channel =
+		 * NetworkRegistry.INSTANCE.newEventDrivenChannel("PrinterBlock");
+		 * channel.register(new PacketHandler());
+		 */
+
 	}
 
 	@Mod.EventHandler
@@ -46,22 +64,11 @@ public class ItemMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		metadata = MetaData.init(metadata);
 
-		logger = event.getModLog();
-
 		Configuration configs = new Configuration(event.getSuggestedConfigurationFile());
 		try {
 			configs.load();
 		} catch (RuntimeException e) {
-			logger.warn(e);
+			DYNServerMod.logger.warn(e);
 		}
-
-		/*
-		 * flags = new Flags(); GameRegistry.registerItem(flags, "ctfFlags");
-		 *
-		 * flagBlock = new FlagBlock();
-		 *
-		 * GameRegistry.registerBlock(flagBlock, "ctfFlagBlocks");
-		 */
-
 	}
 }
