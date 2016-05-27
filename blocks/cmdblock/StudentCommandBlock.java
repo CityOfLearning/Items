@@ -8,9 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,16 +18,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 public class StudentCommandBlock extends BlockContainer {
-	public static final PropertyBool TRIGGERED = PropertyBool.create("triggered");
+	private static boolean blstate = false;
 
 	public StudentCommandBlock() {
 		super(Material.iron, MapColor.adobeColor);
-		setDefaultState(blockState.getBaseState().withProperty(TRIGGERED, Boolean.valueOf(false)));
-	}
-
-	@Override
-	protected BlockState createBlockState() {
-		return new BlockState(this, new IProperty[] { TRIGGERED });
 	}
 
 	/**
@@ -54,13 +45,7 @@ public class StudentCommandBlock extends BlockContainer {
 	 */
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		int i = 0;
-
-		if (state.getValue(TRIGGERED).booleanValue()) {
-			i |= 1;
-		}
-
-		return i;
+		return blstate ? 1 : 0;
 	}
 
 	/**
@@ -77,7 +62,7 @@ public class StudentCommandBlock extends BlockContainer {
 	 */
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(TRIGGERED, Boolean.valueOf((meta & 1) > 0));
+		return getDefaultState();
 	}
 
 	@Override
@@ -101,7 +86,7 @@ public class StudentCommandBlock extends BlockContainer {
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ,
 			int meta, EntityLivingBase placer) {
-		return getDefaultState().withProperty(TRIGGERED, Boolean.valueOf(false));
+		return getDefaultState();
 	}
 
 	/**
@@ -134,13 +119,12 @@ public class StudentCommandBlock extends BlockContainer {
 	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
 		if (!worldIn.isRemote) {
 			boolean flag = worldIn.isBlockPowered(pos);
-			boolean flag1 = state.getValue(TRIGGERED).booleanValue();
 
-			if (flag && !flag1) {
-				worldIn.setBlockState(pos, state.withProperty(TRIGGERED, Boolean.valueOf(true)), 4);
+			if (flag && !StudentCommandBlock.blstate/* flag1 */) {
+				StudentCommandBlock.blstate = true;
 				worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
-			} else if (!flag && flag1) {
-				worldIn.setBlockState(pos, state.withProperty(TRIGGERED, Boolean.valueOf(false)), 4);
+			} else if (!flag && StudentCommandBlock.blstate/* flag1 */) {
+				StudentCommandBlock.blstate = false;
 			}
 		}
 	}
@@ -167,7 +151,6 @@ public class StudentCommandBlock extends BlockContainer {
 
 		if (tileentity instanceof TileEntityStudentCommandBlock) {
 			((TileEntityStudentCommandBlock) tileentity).getCommandBlockLogic().trigger(worldIn);
-			worldIn.updateComparatorOutputLevel(pos, this);
 		}
 	}
 }

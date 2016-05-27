@@ -3,8 +3,10 @@ package com.dyn.item.blocks.cmdblock;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.dyn.DYNServerMod;
 import com.dyn.item.ItemMod;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ICommandSender;
@@ -17,6 +19,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class StudentCommandBlockLogic implements ICommandSender {
 	/** The formatting for the timestamp on commands run. */
@@ -57,7 +61,6 @@ public abstract class StudentCommandBlockLogic implements ICommandSender {
 	 * Returns the command of the command block.
 	 */
 	public String getCommand() {
-		System.out.println("BL Retrieving Command: " + commandStored);
 		return commandStored;
 	}
 
@@ -75,7 +78,7 @@ public abstract class StudentCommandBlockLogic implements ICommandSender {
 	}
 
 	/**
-	 * Returns the lastOutput.
+	 * Returns the this.lastOutput.
 	 */
 	public IChatComponent getLastOutput() {
 		return lastOutput;
@@ -90,7 +93,7 @@ public abstract class StudentCommandBlockLogic implements ICommandSender {
 	}
 
 	/**
-	 * returns the successCount int.
+	 * returns the this.successCount int.
 	 */
 	public int getSuccessCount() {
 		return successCount;
@@ -133,7 +136,6 @@ public abstract class StudentCommandBlockLogic implements ICommandSender {
 	 * Sets the command.
 	 */
 	public void setCommand(String command) {
-		System.out.println("BL Setting Command to: " + command);
 		commandStored = command;
 		successCount = 0;
 	}
@@ -160,31 +162,33 @@ public abstract class StudentCommandBlockLogic implements ICommandSender {
 	}
 
 	public void trigger(World worldIn) {
-		System.out.println("BL Triggering block with command" + commandStored);
-		if (worldIn.isRemote) {
-			successCount = 0;
-		}
+		if (!commandStored.isEmpty()) {
+			if (worldIn.isRemote) {
+				successCount = 0;
+			}
 
-		MinecraftServer minecraftserver = MinecraftServer.getServer();
+			MinecraftServer minecraftserver = MinecraftServer.getServer();
 
-		if ((minecraftserver != null) && minecraftserver.isAnvilFileSet() && minecraftserver.isCommandBlockEnabled()) {
-			System.out.println("server not null");
-			ICommandManager icommandmanager = minecraftserver.getCommandManager();
+			if ((minecraftserver != null) && minecraftserver.isAnvilFileSet()
+					&& minecraftserver.isCommandBlockEnabled()) {
+				ICommandManager icommandmanager = minecraftserver.getCommandManager();
 
-			try {
-				lastOutput = null;
-				successCount = icommandmanager.executeCommand(this, commandStored);
-				System.out.println("commandmanager not null?");
-			} catch (Throwable throwable) {
-				CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Executing command block");
-				CrashReportCategory crashreportcategory = crashreport.makeCategory("Command to be executed");
-				crashreportcategory.addCrashSectionCallable("Command",
-						() -> StudentCommandBlockLogic.this.getCommand());
-				crashreportcategory.addCrashSectionCallable("Name", () -> StudentCommandBlockLogic.this.getName());
-				throw new ReportedException(crashreport);
+				try {
+					lastOutput = null;
+					successCount = icommandmanager.executeCommand(this, commandStored);
+				} catch (Throwable throwable) {
+					CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Executing command block");
+					CrashReportCategory crashreportcategory = crashreport.makeCategory("Command to be executed");
+					crashreportcategory.addCrashSectionCallable("Command",
+							() -> StudentCommandBlockLogic.this.getCommand());
+					crashreportcategory.addCrashSectionCallable("Name", () -> StudentCommandBlockLogic.this.getName());
+					throw new ReportedException(crashreport);
+				}
+			} else {
+				successCount = 0;
 			}
 		} else {
-			successCount = 0;
+			DYNServerMod.logger.info("Command is empty");
 		}
 	}
 

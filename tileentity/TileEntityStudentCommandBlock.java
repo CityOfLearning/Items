@@ -1,7 +1,9 @@
 package com.dyn.item.tileentity;
 
+import com.dyn.DYNServerMod;
 import com.dyn.item.blocks.cmdblock.StudentCommandBlockLogic;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,9 +13,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityStudentCommandBlock extends TileEntity {
 	private final StudentCommandBlockLogic commandBlockLogic = new StudentCommandBlockLogic() {
+
 		/**
 		 * Returns the entity associated with the command sender. MAY BE NULL!
 		 */
@@ -56,14 +61,12 @@ public class TileEntityStudentCommandBlock extends TileEntity {
 		 */
 		@Override
 		public void setCommand(String command) {
-			System.out.println("TE Setting Command to: " + command);
 			super.setCommand(command);
 			TileEntityStudentCommandBlock.this.markDirty();
 		}
 
 		@Override
 		public void updateCommand() {
-			System.out.println("TE Updating Command");
 			TileEntityStudentCommandBlock.this.getWorld().markBlockForUpdate(TileEntityStudentCommandBlock.this.pos);
 		}
 	};
@@ -90,7 +93,26 @@ public class TileEntityStudentCommandBlock extends TileEntity {
 	public Packet getDescriptionPacket() {
 		NBTTagCompound nbttagcompound = new NBTTagCompound();
 		writeToNBT(nbttagcompound);
+		// PacketDispatcher.sendToAll(new SyncStudentCommandMessage(this.pos,
+		// nbttagcompound));
 		return new S35PacketUpdateTileEntity(pos, 2, nbttagcompound);
+	}
+
+	/**
+	 * Called when you receive a TileEntityData packet for the location this
+	 * TileEntity is currently in. On the client, the NetworkManager will always
+	 * be the remote server. On the server, it will be whomever is responsible
+	 * for sending the packet.
+	 *
+	 * @param net
+	 *            The NetworkManager the packet originated from
+	 * @param pkt
+	 *            The data packet
+	 */
+	@Override
+	public void onDataPacket(net.minecraft.network.NetworkManager net,
+			net.minecraft.network.play.server.S35PacketUpdateTileEntity pkt) {
+		readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override
