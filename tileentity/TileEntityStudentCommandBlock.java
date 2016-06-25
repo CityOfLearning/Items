@@ -1,9 +1,7 @@
 package com.dyn.item.tileentity;
 
-import com.dyn.DYNServerMod;
 import com.dyn.item.blocks.cmdblock.StudentCommandBlockLogic;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,8 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityStudentCommandBlock extends TileEntity {
 	private final StudentCommandBlockLogic commandBlockLogic = new StudentCommandBlockLogic() {

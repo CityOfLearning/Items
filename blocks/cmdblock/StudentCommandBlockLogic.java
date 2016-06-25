@@ -6,7 +6,6 @@ import java.util.Date;
 import com.dyn.DYNServerMod;
 import com.dyn.item.ItemMod;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ICommandSender;
@@ -19,8 +18,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class StudentCommandBlockLogic implements ICommandSender {
 	/** The formatting for the timestamp on commands run. */

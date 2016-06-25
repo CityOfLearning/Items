@@ -1,6 +1,5 @@
 package com.dyn.item;
 
-import com.dyn.DYNServerMod;
 import com.dyn.item.blocks.cmdblock.StudentCommandBlock;
 import com.dyn.item.proxy.Proxy;
 import com.dyn.item.reference.MetaData;
@@ -8,7 +7,6 @@ import com.dyn.item.reference.Reference;
 import com.dyn.item.tileentity.TileEntityStudentCommandBlock;
 
 import net.minecraft.block.Block;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -64,11 +62,5 @@ public class ItemMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		metadata = MetaData.init(metadata);
 
-		Configuration configs = new Configuration(event.getSuggestedConfigurationFile());
-		try {
-			configs.load();
-		} catch (RuntimeException e) {
-			DYNServerMod.logger.warn(e);
-		}
 	}
 }
