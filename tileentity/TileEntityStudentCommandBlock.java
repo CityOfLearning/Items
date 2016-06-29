@@ -2,15 +2,19 @@ package com.dyn.item.tileentity;
 
 import com.dyn.item.blocks.cmdblock.StudentCommandBlockLogic;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityStudentCommandBlock extends TileEntity {
 	private final StudentCommandBlockLogic commandBlockLogic = new StudentCommandBlockLogic() {
@@ -64,6 +68,22 @@ public class TileEntityStudentCommandBlock extends TileEntity {
 		@Override
 		public void updateCommand() {
 			TileEntityStudentCommandBlock.this.getWorld().markBlockForUpdate(TileEntityStudentCommandBlock.this.pos);
+		}
+
+		@Override
+		@SideOnly(Side.CLIENT)
+		public int func_145751_f() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		@SideOnly(Side.CLIENT)
+		public void func_145757_a(ByteBuf p_145757_1_) {
+			// TODO Auto-generated method stub
+			p_145757_1_.writeInt(TileEntityStudentCommandBlock.this.pos.getX());
+            p_145757_1_.writeInt(TileEntityStudentCommandBlock.this.pos.getY());
+            p_145757_1_.writeInt(TileEntityStudentCommandBlock.this.pos.getZ());
 		}
 	};
 

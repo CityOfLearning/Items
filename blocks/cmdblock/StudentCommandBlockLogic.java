@@ -9,6 +9,7 @@ import com.dyn.item.ItemMod;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +20,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
 
-public abstract class StudentCommandBlockLogic implements ICommandSender {
+public abstract class StudentCommandBlockLogic extends CommandBlockLogic implements ICommandSender {
 	/** The formatting for the timestamp on commands run. */
 	private static final SimpleDateFormat timestampFormat = new SimpleDateFormat("HH:mm:ss");
 	/** The number of successful commands run. (used for redstone output) */
