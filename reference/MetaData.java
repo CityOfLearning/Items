@@ -9,7 +9,7 @@ public class MetaData {
 		metadata.modId = Reference.MOD_ID;
 		metadata.name = Reference.MOD_NAME;
 		metadata.description = "Specialized Items and Blocks for the city server";
-		metadata.url = "https://github.com/Digital-Youth-Network/Items";
+		metadata.url = "https://github.com/CityOfLearning/Items";
 		metadata.version = Reference.VERSION;
 		metadata.authorList = Arrays.asList("Dom Amato");
 		metadata.credits = "";
