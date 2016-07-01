@@ -23,9 +23,6 @@ public class ItemMod {
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
 	public static Proxy proxy;
 
-//	@Mod.Metadata(Reference.MOD_ID)
-//	public ModMetadata metadata;
-
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		proxy.init();
@@ -60,7 +57,6 @@ public class ItemMod {
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-//		metadata = MetaData.init(metadata);
 		MetaData.init(event.getModMetadata());
 	}
 }
