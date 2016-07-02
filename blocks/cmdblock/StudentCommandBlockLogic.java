@@ -58,10 +58,12 @@ public abstract class StudentCommandBlockLogic extends CommandBlockLogic impleme
 	/**
 	 * Returns the command of the command block.
 	 */
+	@Override
 	public String getCommand() {
 		return commandStored;
 	}
 
+	@Override
 	public CommandResultStats getCommandResultStats() {
 		return resultStats;
 	}
@@ -78,6 +80,7 @@ public abstract class StudentCommandBlockLogic extends CommandBlockLogic impleme
 	/**
 	 * Returns the this.lastOutput.
 	 */
+	@Override
 	public IChatComponent getLastOutput() {
 		return lastOutput;
 	}
@@ -93,6 +96,7 @@ public abstract class StudentCommandBlockLogic extends CommandBlockLogic impleme
 	/**
 	 * returns the this.successCount int.
 	 */
+	@Override
 	public int getSuccessCount() {
 		return successCount;
 	}
@@ -100,6 +104,7 @@ public abstract class StudentCommandBlockLogic extends CommandBlockLogic impleme
 	/**
 	 * Reads NBT formatting and stored data into variables.
 	 */
+	@Override
 	public void readDataFromNBT(NBTTagCompound nbt) {
 		commandStored = nbt.getString("Command");
 		successCount = nbt.getInteger("SuccessCount");
@@ -133,6 +138,7 @@ public abstract class StudentCommandBlockLogic extends CommandBlockLogic impleme
 	/**
 	 * Sets the command.
 	 */
+	@Override
 	public void setCommand(String command) {
 		commandStored = command;
 		successCount = 0;
@@ -143,22 +149,27 @@ public abstract class StudentCommandBlockLogic extends CommandBlockLogic impleme
 		resultStats.func_179672_a(this, type, amount);
 	}
 
+	@Override
 	public void setLastOutput(IChatComponent lastOutputMessage) {
 		lastOutput = lastOutputMessage;
 	}
 
+	@Override
 	public void setName(String name) {
 		customName = name;
 	}
 
+	@Override
 	public void setTrackOutput(boolean shouldTrackOutput) {
 		trackOutput = shouldTrackOutput;
 	}
 
+	@Override
 	public boolean shouldTrackOutput() {
 		return trackOutput;
 	}
 
+	@Override
 	public void trigger(World worldIn) {
 		if (!commandStored.isEmpty()) {
 			if (worldIn.isRemote) {
@@ -190,6 +201,7 @@ public abstract class StudentCommandBlockLogic extends CommandBlockLogic impleme
 		}
 	}
 
+	@Override
 	public boolean tryOpenEditCommandBlock(EntityPlayer playerIn) {
 
 		if (playerIn.getEntityWorld().isRemote) {
@@ -198,11 +210,13 @@ public abstract class StudentCommandBlockLogic extends CommandBlockLogic impleme
 		return true;
 	}
 
+	@Override
 	public abstract void updateCommand();
 
 	/**
 	 * Stores data to NBT format.
 	 */
+	@Override
 	public void writeDataToNBT(NBTTagCompound tagCompound) {
 		tagCompound.setString("Command", commandStored);
 		tagCompound.setInteger("SuccessCount", successCount);
