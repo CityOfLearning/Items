@@ -6,6 +6,7 @@ import com.dyn.item.gui.command.StudentComamndGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Client implements Proxy {
@@ -25,12 +26,11 @@ public class Client implements Proxy {
 		// manually. This will probably change in future.
 		// It must be done in the init phase, not preinit, and must be done on
 		// client only.
-		Item itemBlockSimple = GameRegistry.findItem("dynitems", "student_command_block");
-		ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation("dynitems:student_command_block",
-				"inventory");
-		final int DEFAULT_ITEM_SUBTYPE = 0;
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(itemBlockSimple, DEFAULT_ITEM_SUBTYPE,
-				itemModelResourceLocation);
+		Item studentCmdBlock = GameRegistry.findItem("dyn|items", "student_command_block");
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(studentCmdBlock, 0,
+				new ModelResourceLocation(new ResourceLocation("dynitems", "textures/blocks/student_command_block.png"),
+						null));
+
 	}
 
 	@Override
