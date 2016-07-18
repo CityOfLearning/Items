@@ -146,7 +146,7 @@ public abstract class StudentCommandBlockLogic extends CommandBlockLogic impleme
 
 	@Override
 	public void setCommandStat(CommandResultStats.Type type, int amount) {
-		resultStats.func_179672_a(this, type, amount);
+		resultStats.setCommandStatScore(this, type, amount);
 	}
 
 	@Override

@@ -26,7 +26,7 @@ public class Client implements Proxy {
 		// manually. This will probably change in future.
 		// It must be done in the init phase, not preinit, and must be done on
 		// client only.
-		Item studentCmdBlock = GameRegistry.findItem("dyn|items", "student_command_block");
+		Item studentCmdBlock = GameRegistry.findItem("dynitems", "student_command_block");
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(studentCmdBlock, 0,
 				new ModelResourceLocation(new ResourceLocation("dynitems", "textures/blocks/student_command_block.png"),
 						null));

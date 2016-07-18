@@ -7,6 +7,7 @@ import com.dyn.item.reference.Reference;
 import com.dyn.item.tileentity.TileEntityStudentCommandBlock;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -30,7 +31,9 @@ public class ItemMod {
 		// your mod. use lower case.
 		Block blockTileEntityData = new StudentCommandBlock().setBlockUnbreakable().setResistance(6000000.0F)
 				.setUnlocalizedName("student_command_block");
-		GameRegistry.registerBlock(blockTileEntityData, "student_command_block");
+		// GameRegistry.registerBlock(blockTileEntityData,
+		// "student_command_block");
+		GameRegistry.registerBlock(blockTileEntityData, ItemBlock.class, "student_command_block");
 		// you don't need to register an item corresponding to the block,
 		// GameRegistry.registerBlock does this automatically.
 		GameRegistry.registerTileEntity(TileEntityStudentCommandBlock.class, "student_command_block_te");
