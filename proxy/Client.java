@@ -2,11 +2,13 @@ package com.dyn.item.proxy;
 
 import com.dyn.item.blocks.cmdblock.StudentCommandBlockLogic;
 import com.dyn.item.gui.command.StudentComamndGui;
+import com.dyn.item.reference.Reference;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Client implements Proxy {
@@ -36,6 +38,12 @@ public class Client implements Proxy {
 	@Override
 	public void openStudentCommandGui(StudentCommandBlockLogic cmdBlockLogic) {
 		Minecraft.getMinecraft().displayGuiScreen(new StudentComamndGui(cmdBlockLogic));
+	}
+
+	@Override
+	public void registerItem(Item item, String name, int meta) {
+		ModelResourceLocation location = new ModelResourceLocation(Reference.MOD_ID + ":" + name, "inventory");
+		ModelLoader.setCustomModelResourceLocation(item, meta, location);
 	}
 
 	/**

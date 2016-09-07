@@ -1,6 +1,7 @@
 package com.dyn.item;
 
 import com.dyn.item.blocks.cmdblock.StudentCommandBlock;
+import com.dyn.item.items.DynItemManager;
 import com.dyn.item.proxy.Proxy;
 import com.dyn.item.reference.MetaData;
 import com.dyn.item.reference.Reference;
@@ -60,5 +61,6 @@ public class ItemMod {
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		MetaData.init(event.getModMetadata());
+		DynItemManager.load();
 	}
 }
