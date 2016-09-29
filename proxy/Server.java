@@ -2,6 +2,7 @@ package com.dyn.item.proxy;
 
 import com.dyn.item.blocks.cmdblock.StudentCommandBlockLogic;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
 public class Server implements Proxy {
@@ -23,6 +24,12 @@ public class Server implements Proxy {
 
 	@Override
 	public void openStudentCommandGui(StudentCommandBlockLogic cmdBlockLogic) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void registerBlockItem(Block block) {
 		// TODO Auto-generated method stub
 
 	}
