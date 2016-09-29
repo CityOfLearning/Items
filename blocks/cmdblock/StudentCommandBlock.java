@@ -2,7 +2,7 @@ package com.dyn.item.blocks.cmdblock;
 
 import java.util.Random;
 
-import com.dyn.item.tileentity.TileEntityStudentCommandBlock;
+import com.dyn.item.blocks.cmdblock.tileentity.TileEntityStudentCommandBlock;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;

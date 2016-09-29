@@ -1,4 +1,4 @@
-package com.dyn.item.tileentity;
+package com.dyn.item.blocks.cmdblock.tileentity;
 
 import com.dyn.item.blocks.cmdblock.StudentCommandBlockLogic;
 
