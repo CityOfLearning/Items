@@ -53,7 +53,8 @@ public class DynItemManager {
 		DynItemManager.key2 = new GenericItem(26965).setUnlocalizedName("npcKey2");
 		final Item sapphire = new GenericItem(26970).setUnlocalizedName("npcSaphire")
 				.setCreativeTab(CreativeTabs.tabMaterials);
-		final Item ruby = new GenericItem(26971).setUnlocalizedName("npcRuby").setCreativeTab(CreativeTabs.tabMaterials);
+		final Item ruby = new GenericItem(26971).setUnlocalizedName("npcRuby")
+				.setCreativeTab(CreativeTabs.tabMaterials);
 		final Item amethyst = new GenericItem(26972).setUnlocalizedName("npcAmethyst")
 				.setCreativeTab(CreativeTabs.tabMaterials);
 		OreDictionary.registerOre("gemSaphire", sapphire);
