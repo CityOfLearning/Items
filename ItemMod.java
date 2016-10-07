@@ -1,6 +1,5 @@
 package com.dyn.item;
 
-import com.dyn.item.blocks.DynBlockManager;
 import com.dyn.item.blocks.cmdblock.StudentCommandBlock;
 import com.dyn.item.blocks.cmdblock.tileentity.TileEntityStudentCommandBlock;
 import com.dyn.item.items.DynItemManager;
@@ -41,7 +40,6 @@ public class ItemMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		MetaData.init(event.getModMetadata());
 		DynItemManager.load();
-		DynBlockManager.load();
 
 		// each instance of your block should have a name that is unique within
 		// your mod. use lower case.

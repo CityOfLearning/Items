@@ -4,8 +4,6 @@ import com.dyn.item.blocks.cmdblock.StudentCommandBlockLogic;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Server implements Proxy {
 
@@ -31,14 +29,9 @@ public class Server implements Proxy {
 	}
 
 	@Override
-	public void registerBlock(Block block, String name, int meta, Class<? extends ItemBlock> itemclass) {
-		this.registerBlock(block, name, meta, itemclass, false);
-	}
+	public void preInit() {
+		// TODO Auto-generated method stub
 
-	@Override
-	public void registerBlock(Block block, String name, int meta, Class<? extends ItemBlock> itemclass,
-			boolean seperateMetadata) {
-		GameRegistry.registerBlock(block, itemclass, name);
 	}
 
 	@Override
@@ -58,12 +51,6 @@ public class Server implements Proxy {
 	public void renderGUI() {
 		// Actions on render GUI for the server (logging)
 
-	}
-
-	@Override
-	public void preInit() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
