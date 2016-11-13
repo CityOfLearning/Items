@@ -1,14 +1,19 @@
-package com.dyn.item.proxy;
+package com.dyn.fixins.proxy;
 
-import com.dyn.item.blocks.cmdblock.StudentCommandBlockLogic;
-import com.dyn.item.gui.command.StudentComamndGui;
-import com.dyn.item.reference.Reference;
+import com.dyn.fixins.blocks.cmdblock.StudentCommandBlockLogic;
+import com.dyn.fixins.entity.crash.CrashTestEntity;
+import com.dyn.fixins.entity.crash.CrashTestEntityRenderer;
+import com.dyn.fixins.entity.ghost.GhostEntity;
+import com.dyn.fixins.entity.ghost.GhostEntityRenderer;
+import com.dyn.fixins.reference.Reference;
+import com.dyn.render.gui.command.StudentComamndGui;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Client implements Proxy {
@@ -25,7 +30,8 @@ public class Client implements Proxy {
 
 	@Override
 	public void preInit() {
-
+		RenderingRegistry.registerEntityRenderingHandler(CrashTestEntity.class, new CrashTestEntityRenderer());
+		RenderingRegistry.registerEntityRenderingHandler(GhostEntity.class, new GhostEntityRenderer());
 	}
 
 	@Override
