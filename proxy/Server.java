@@ -1,20 +1,11 @@
-package com.dyn.item.proxy;
+package com.dyn.fixins.proxy;
 
-import com.dyn.item.blocks.cmdblock.StudentCommandBlockLogic;
+import com.dyn.fixins.blocks.cmdblock.StudentCommandBlockLogic;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
 public class Server implements Proxy {
-
-	/*
-	 * @SubscribeEvent public void dropEvent(ItemTossEvent event) { if
-	 * ((event.player != null) && (event.entityItem != null) &&
-	 * (event.entityItem.getEntityItem() != null)) { ItemStack is =
-	 * event.entityItem.getEntityItem(); if (is.getItem() instanceof Flags) {
-	 * event.setCanceled(true); PacketDispatcher.sendTo(new
-	 * ReturnFlagMessage(is), (EntityPlayerMP) event.player); } } }
-	 */
 
 	@Override
 	public void init() {

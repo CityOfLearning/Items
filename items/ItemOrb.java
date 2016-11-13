@@ -1,4 +1,4 @@
-package com.dyn.item.items;
+package com.dyn.fixins.items;
 
 import java.awt.Color;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.dyn.item.items;
+package com.dyn.fixins.items;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;

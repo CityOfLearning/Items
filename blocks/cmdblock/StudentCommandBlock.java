@@ -1,8 +1,8 @@
-package com.dyn.item.blocks.cmdblock;
+package com.dyn.fixins.blocks.cmdblock;
 
 import java.util.Random;
 
-import com.dyn.item.blocks.cmdblock.tileentity.TileEntityStudentCommandBlock;
+import com.dyn.fixins.blocks.cmdblock.tileentity.StudentCommandBlockTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -30,14 +30,14 @@ public class StudentCommandBlock extends BlockContainer {
 	 */
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityStudentCommandBlock();
+		return new StudentCommandBlockTileEntity();
 	}
 
 	@Override
 	public int getComparatorInputOverride(World worldIn, BlockPos pos) {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
-		return tileentity instanceof TileEntityStudentCommandBlock
-				? ((TileEntityStudentCommandBlock) tileentity).getCommandBlockLogic().getSuccessCount() : 0;
+		return tileentity instanceof StudentCommandBlockTileEntity
+				? ((StudentCommandBlockTileEntity) tileentity).getCommandBlockLogic().getSuccessCount() : 0;
 	}
 
 	/**
@@ -74,8 +74,8 @@ public class StudentCommandBlock extends BlockContainer {
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
-		return tileentity instanceof TileEntityStudentCommandBlock
-				? ((TileEntityStudentCommandBlock) tileentity).getCommandBlockLogic().tryOpenEditCommandBlock(playerIn)
+		return tileentity instanceof StudentCommandBlockTileEntity
+				? ((StudentCommandBlockTileEntity) tileentity).getCommandBlockLogic().tryOpenEditCommandBlock(playerIn)
 				: false;
 	}
 
@@ -98,8 +98,8 @@ public class StudentCommandBlock extends BlockContainer {
 			ItemStack stack) {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 
-		if (tileentity instanceof TileEntityStudentCommandBlock) {
-			StudentCommandBlockLogic commandblocklogic = ((TileEntityStudentCommandBlock) tileentity)
+		if (tileentity instanceof StudentCommandBlockTileEntity) {
+			StudentCommandBlockLogic commandblocklogic = ((StudentCommandBlockTileEntity) tileentity)
 					.getCommandBlockLogic();
 
 			if (stack.hasDisplayName()) {
@@ -149,8 +149,8 @@ public class StudentCommandBlock extends BlockContainer {
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 
-		if (tileentity instanceof TileEntityStudentCommandBlock) {
-			((TileEntityStudentCommandBlock) tileentity).getCommandBlockLogic().trigger(worldIn);
+		if (tileentity instanceof StudentCommandBlockTileEntity) {
+			((StudentCommandBlockTileEntity) tileentity).getCommandBlockLogic().trigger(worldIn);
 		}
 	}
 }

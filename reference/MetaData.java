@@ -1,4 +1,4 @@
-package com.dyn.item.reference;
+package com.dyn.fixins.reference;
 
 import java.util.Arrays;
 
@@ -8,7 +8,7 @@ public class MetaData {
 	public static ModMetadata init(ModMetadata metadata) {
 		metadata.modId = Reference.MOD_ID;
 		metadata.name = Reference.MOD_NAME;
-		metadata.description = "Specialized Items and Blocks for the city server";
+		metadata.description = "Specialized Items, Blocks, and Entities for the city server";
 		metadata.url = "https://github.com/CityOfLearning/Items";
 		metadata.version = Reference.VERSION;
 		metadata.authorList = Arrays.asList("Dom Amato");

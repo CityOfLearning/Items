@@ -1,6 +1,6 @@
-package com.dyn.item.blocks.cmdblock.tileentity;
+package com.dyn.fixins.blocks.cmdblock.tileentity;
 
-import com.dyn.item.blocks.cmdblock.StudentCommandBlockLogic;
+import com.dyn.fixins.blocks.cmdblock.StudentCommandBlockLogic;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.command.CommandResultStats;
@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityStudentCommandBlock extends TileEntity {
+public class StudentCommandBlockTileEntity extends TileEntity {
 	private final StudentCommandBlockLogic commandBlockLogic = new StudentCommandBlockLogic() {
 
 		@Override
@@ -29,9 +29,9 @@ public class TileEntityStudentCommandBlock extends TileEntity {
 		@SideOnly(Side.CLIENT)
 		public void func_145757_a(ByteBuf p_145757_1_) {
 			// TODO Auto-generated method stub
-			p_145757_1_.writeInt(TileEntityStudentCommandBlock.this.pos.getX());
-			p_145757_1_.writeInt(TileEntityStudentCommandBlock.this.pos.getY());
-			p_145757_1_.writeInt(TileEntityStudentCommandBlock.this.pos.getZ());
+			p_145757_1_.writeInt(StudentCommandBlockTileEntity.this.pos.getX());
+			p_145757_1_.writeInt(StudentCommandBlockTileEntity.this.pos.getY());
+			p_145757_1_.writeInt(StudentCommandBlockTileEntity.this.pos.getZ());
 		}
 
 		/**
@@ -48,7 +48,7 @@ public class TileEntityStudentCommandBlock extends TileEntity {
 		 */
 		@Override
 		public World getEntityWorld() {
-			return TileEntityStudentCommandBlock.this.getWorld();
+			return StudentCommandBlockTileEntity.this.getWorld();
 		}
 
 		/**
@@ -57,7 +57,7 @@ public class TileEntityStudentCommandBlock extends TileEntity {
 		 */
 		@Override
 		public BlockPos getPosition() {
-			return TileEntityStudentCommandBlock.this.pos;
+			return StudentCommandBlockTileEntity.this.pos;
 		}
 
 		/**
@@ -66,9 +66,9 @@ public class TileEntityStudentCommandBlock extends TileEntity {
 		 */
 		@Override
 		public Vec3 getPositionVector() {
-			return new Vec3(TileEntityStudentCommandBlock.this.pos.getX() + 0.5D,
-					TileEntityStudentCommandBlock.this.pos.getY() + 0.5D,
-					TileEntityStudentCommandBlock.this.pos.getZ() + 0.5D);
+			return new Vec3(StudentCommandBlockTileEntity.this.pos.getX() + 0.5D,
+					StudentCommandBlockTileEntity.this.pos.getY() + 0.5D,
+					StudentCommandBlockTileEntity.this.pos.getZ() + 0.5D);
 		}
 
 		/**
@@ -77,12 +77,12 @@ public class TileEntityStudentCommandBlock extends TileEntity {
 		@Override
 		public void setCommand(String command) {
 			super.setCommand(command);
-			TileEntityStudentCommandBlock.this.markDirty();
+			StudentCommandBlockTileEntity.this.markDirty();
 		}
 
 		@Override
 		public void updateCommand() {
-			TileEntityStudentCommandBlock.this.getWorld().markBlockForUpdate(TileEntityStudentCommandBlock.this.pos);
+			StudentCommandBlockTileEntity.this.getWorld().markBlockForUpdate(StudentCommandBlockTileEntity.this.pos);
 		}
 	};
 

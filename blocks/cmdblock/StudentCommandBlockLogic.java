@@ -1,10 +1,10 @@
-package com.dyn.item.blocks.cmdblock;
+package com.dyn.fixins.blocks.cmdblock;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.dyn.DYNServerMod;
-import com.dyn.item.ItemMod;
+import com.dyn.fixins.DynFixinsMod;
 
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandManager;
@@ -205,7 +205,7 @@ public abstract class StudentCommandBlockLogic extends CommandBlockLogic impleme
 	public boolean tryOpenEditCommandBlock(EntityPlayer playerIn) {
 
 		if (playerIn.getEntityWorld().isRemote) {
-			ItemMod.proxy.openStudentCommandGui(this);
+			DynFixinsMod.proxy.openStudentCommandGui(this);
 		}
 		return true;
 	}

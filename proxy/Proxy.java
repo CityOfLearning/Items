@@ -1,6 +1,6 @@
-package com.dyn.item.proxy;
+package com.dyn.fixins.proxy;
 
-import com.dyn.item.blocks.cmdblock.StudentCommandBlockLogic;
+import com.dyn.fixins.blocks.cmdblock.StudentCommandBlockLogic;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;

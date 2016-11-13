@@ -1,9 +1,9 @@
-package com.dyn.item.items;
+package com.dyn.fixins.items;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dyn.item.ItemMod;
+import com.dyn.fixins.DynFixinsMod;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,10 +47,10 @@ public class GenericItem extends Item {
 			List<ItemStack> list = new ArrayList<ItemStack>();
 			getSubItems(this, null, list);
 			for (ItemStack stack : list) {
-				ItemMod.proxy.registerItem(this, name, stack.getItemDamage());
+				DynFixinsMod.proxy.registerItem(this, name, stack.getItemDamage());
 			}
 		} else {
-			ItemMod.proxy.registerItem(this, name, 0);
+			DynFixinsMod.proxy.registerItem(this, name, 0);
 		}
 		return this;
 	}
