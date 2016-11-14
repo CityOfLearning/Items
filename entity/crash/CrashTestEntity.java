@@ -53,4 +53,9 @@ public class CrashTestEntity extends EntityLiving {
 			}
 		}
 	}
+	
+	@Override
+	public String getName() {
+		return "Dummy";
+	}
 }

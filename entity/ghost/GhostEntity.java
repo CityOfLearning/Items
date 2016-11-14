@@ -179,7 +179,7 @@ public class GhostEntity extends EntityFlying {
 	public GhostEntity(World par1World) {
 		super(par1World);
 
-		setSize(0.1F, 1.8F);
+		setSize(0.5F, 0.5F);
 		((PathNavigateGround) getNavigator()).setAvoidsWater(false);
 		noClip = true;
 
@@ -245,7 +245,7 @@ public class GhostEntity extends EntityFlying {
 	@Override
 	protected String getLivingSound() {
 		if (worldObj.rand.nextInt(10) == 0) {
-			return "dynfixins:ghost_sound";
+			return "dynfixins:mob.ghost.ambient";
 		}
 		return null;
 	}
@@ -257,7 +257,7 @@ public class GhostEntity extends EntityFlying {
 
 	@Override
 	protected float getSoundVolume() {
-		return 0.05F;
+		return 0.15F;
 	}
 
 	@Override
@@ -306,5 +306,10 @@ public class GhostEntity extends EntityFlying {
                 setDead();
             }
         }
+	}
+	
+	@Override
+	public String getName() {
+		return "Ghost";
 	}
 }
