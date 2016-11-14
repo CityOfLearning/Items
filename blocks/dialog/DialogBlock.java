@@ -67,7 +67,7 @@ public class DialogBlock extends Block implements ITileEntityProvider {
 		if (tileentity instanceof DialogBlockTileEntity) {
 			DialogBlockTileEntity tileEntityData = (DialogBlockTileEntity) tileentity;
 			tileEntityData.setData("", 10, 4, 10);
-			tileEntityData.setEntity(new DisplayEntityHead(worldIn));
+			tileEntityData.setEntity(new DisplayEntityHead(worldIn), 90);
 		}
 	}
 
@@ -77,13 +77,12 @@ public class DialogBlock extends Block implements ITileEntityProvider {
 		if (Minecraft.getMinecraft().inGameHasFocus) {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 			if (tileentity instanceof DialogBlockTileEntity) {
-				int xradius = ((DialogBlockTileEntity) tileentity).getXRadius();
-				int yradius = ((DialogBlockTileEntity) tileentity).getYRadius();
-				int zradius = ((DialogBlockTileEntity) tileentity).getZRadius();
+				BlockPos c1 = ((DialogBlockTileEntity) tileentity).getCorner1();
+				BlockPos c2 = ((DialogBlockTileEntity) tileentity).getCorner2();
 				List<EntityPlayer> players = worldIn.getEntitiesWithinAABB(EntityPlayer.class,
-						AxisAlignedBB.fromBounds(pos.getX() - (xradius / 2.0f), pos.getY() - (yradius / 2.0f),
-								pos.getZ() - (zradius / 2.0f), pos.getX() + (xradius / 2.0f),
-								pos.getY() + (yradius / 2.0f), pos.getZ() + (zradius / 2.0f)));
+						AxisAlignedBB.fromBounds(pos.getX() - c1.getX(), pos.getY() - c1.getY(),
+								pos.getZ() - c1.getZ() , pos.getX() + c2.getX(),
+								pos.getY() + c2.getY(), pos.getZ() + c2.getZ()));
 
 				if (players.contains(Minecraft.getMinecraft().thePlayer)) {
 					RenderMod.proxy.toggleDialogHud(((DialogBlockTileEntity) tileentity).getEntity(), true, ((DialogBlockTileEntity) tileentity).getText(), 150);
