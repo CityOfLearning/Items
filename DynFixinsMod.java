@@ -54,7 +54,7 @@ public class DynFixinsMod {
 
 		registerNewEntity(CrashTestEntity.class, "dynCrashTestEntity", 1, ColourHelper.AWTColor2RGBInt(Color.BLACK),
 				ColourHelper.AWTColor2RGBInt(Color.YELLOW));
-		
+
 		registerNewEntity(GhostEntity.class, "dynGhostEntity", 2, ColourHelper.AWTColor2RGBInt(Color.white),
 				ColourHelper.AWTColor2RGBInt(Color.white));
 

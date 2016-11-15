@@ -7,7 +7,6 @@ import com.dyn.robot.entity.DynRobotEntity;
 import com.rabbit.gui.component.display.entity.DisplayEntity;
 import com.rabbit.gui.component.display.entity.DisplayEntityHead;
 
-import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,17 +28,6 @@ public class DialogBlockTileEntity extends TileEntity {
 	private EntityLivingBase entity;
 	private String entityName = "";
 
-	@Override
-	public Packet getDescriptionPacket() {
-		NBTTagCompound tagCompound = new NBTTagCompound();
-		writeToNBT(tagCompound);
-		return new S35PacketUpdateTileEntity(pos, getBlockMetadata(), tagCompound);
-	}
-
-	public String getText() {
-		return text;
-	}
-
 	public BlockPos getCorner1() {
 		return corner1;
 	}
@@ -48,8 +36,19 @@ public class DialogBlockTileEntity extends TileEntity {
 		return corner2;
 	}
 
+	@Override
+	public Packet getDescriptionPacket() {
+		NBTTagCompound tagCompound = new NBTTagCompound();
+		writeToNBT(tagCompound);
+		return new S35PacketUpdateTileEntity(pos, getBlockMetadata(), tagCompound);
+	}
+
 	public EntityLivingBase getEntity() {
 		return entity;
+	}
+
+	public String getText() {
+		return text;
 	}
 
 	public void markForUpdate() {
@@ -94,7 +93,7 @@ public class DialogBlockTileEntity extends TileEntity {
 				entity = (EntityLivingBase) EntityList.createEntityByID(entityId, worldObj);
 				entityName = compound.getString("entityName");
 			}
-			if (entity != null && compound.hasKey("entity")) {
+			if ((entity != null) && compound.hasKey("entity")) {
 				try {
 					entity.readEntityFromNBT(compound.getCompoundTag("entity"));
 				} catch (NullPointerException npe) {
@@ -104,24 +103,24 @@ public class DialogBlockTileEntity extends TileEntity {
 		}
 	}
 
-	public void setEntity(EntityLivingBase entity, int id) {
-		this.entityName = entity.getName();
-		this.entityId = id;
-		this.entity = entity;
-	}
-
-	public void setData(String text, int x, int y, int z) {
-		setData(text, x / 2, y / 2, z / 2, x / 2, y / 2, z / 2);
-	}
-
 	public void setData(String text, BlockPos corner1, BlockPos corner2) {
 		this.text = text;
 		this.corner1 = corner1;
 		this.corner2 = corner2;
 	}
 
+	public void setData(String text, int x, int y, int z) {
+		setData(text, x / 2, y / 2, z / 2, x / 2, y / 2, z / 2);
+	}
+
 	public void setData(String text, int x1, int y1, int z1, int x2, int y2, int z2) {
 		setData(text, new BlockPos(x1, y1, z1), new BlockPos(x2, y2, z2));
+	}
+
+	public void setEntity(EntityLivingBase entity, int id) {
+		entityName = entity.getName();
+		entityId = id;
+		this.entity = entity;
 	}
 
 	@Override

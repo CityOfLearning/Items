@@ -29,6 +29,11 @@ public class CrashTestEntity extends EntityLiving {
 	}
 
 	@Override
+	public String getName() {
+		return "Dummy";
+	}
+
+	@Override
 	public double getYOffset() {
 		return -0.35D;
 	}
@@ -52,10 +57,5 @@ public class CrashTestEntity extends EntityLiving {
 				}
 			}
 		}
-	}
-	
-	@Override
-	public String getName() {
-		return "Dummy";
 	}
 }

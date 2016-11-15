@@ -2,8 +2,6 @@ package com.dyn.fixins.entity.ghost;
 
 import java.util.Random;
 
-import com.forgeessentials.commons.selections.WarpPoint;
-
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -12,7 +10,6 @@ import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -101,13 +98,15 @@ public class GhostEntity extends EntityFlying {
 		public void startExecuting() {
 			if (parentEntity.getAttackTarget() == null) {
 				Random random = parentEntity.getRNG();
-				double d0 = parentEntity.posX + ((random.nextFloat() * 2.0F) - 1.0F) * 16.0F;
-				double d1 = parentEntity.posY + ((random.nextFloat() * 2.0F) - 1.0F) * 16.0F;
-				double d2 = parentEntity.posZ + ((random.nextFloat() * 2.0F) - 1.0F) * 16.0F;
-				//if the ghost is in the ground move it an open area
-				if(((GhostMoveHelper) parentEntity.getMoveHelper()).isNotColliding(parentEntity.posX, parentEntity.posY, parentEntity.posZ, 0.3D)){
+				double d0 = parentEntity.posX + (((random.nextFloat() * 2.0F) - 1.0F) * 16.0F);
+				double d1 = parentEntity.posY + (((random.nextFloat() * 2.0F) - 1.0F) * 16.0F);
+				double d2 = parentEntity.posZ + (((random.nextFloat() * 2.0F) - 1.0F) * 16.0F);
+				// if the ghost is in the ground move it an open area
+				if (((GhostMoveHelper) parentEntity.getMoveHelper()).isNotColliding(parentEntity.posX,
+						parentEntity.posY, parentEntity.posZ, 0.3D)) {
 					double y = parentEntity.posY;
-					while (parentEntity.worldObj.getBlockState(new BlockPos(d0, y, d2)).getBlock() == Blocks.air && y<parentEntity.worldObj.getActualHeight()) {
+					while ((parentEntity.worldObj.getBlockState(new BlockPos(d0, y, d2)).getBlock() == Blocks.air)
+							&& (y < parentEntity.worldObj.getActualHeight())) {
 						y += 1;
 					}
 					d1 = Math.max(d1, y);
@@ -251,6 +250,11 @@ public class GhostEntity extends EntityFlying {
 	}
 
 	@Override
+	public String getName() {
+		return "Ghost";
+	}
+
+	@Override
 	protected float getSoundPitch() {
 		return 1F;
 	}
@@ -295,21 +299,14 @@ public class GhostEntity extends EntityFlying {
 				followPlayerCooldown = getRNG().nextInt(50) + 200;
 			}
 		}
-		
-		if (this.worldObj.isDaytime() && !this.worldObj.isRemote)
-        {
-            float f = this.getBrightness(1.0F);
-            BlockPos blockpos = new BlockPos(this.posX, (double)Math.round(this.posY), this.posZ);
 
-            if (f > 0.5F && this.rand.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && this.worldObj.canSeeSky(blockpos))
-            {
-                setDead();
-            }
-        }
-	}
-	
-	@Override
-	public String getName() {
-		return "Ghost";
+		if (worldObj.isDaytime() && !worldObj.isRemote) {
+			float f = getBrightness(1.0F);
+			BlockPos blockpos = new BlockPos(posX, Math.round(posY), posZ);
+
+			if ((f > 0.5F) && ((rand.nextFloat() * 30.0F) < ((f - 0.4F) * 2.0F)) && worldObj.canSeeSky(blockpos)) {
+				setDead();
+			}
+		}
 	}
 }
