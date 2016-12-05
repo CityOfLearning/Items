@@ -14,6 +14,7 @@ public class CrashTestEntity extends EntityLiving {
 
 	public CrashTestEntity(World worldIn) {
 		super(worldIn);
+		enablePersistence();
 	}
 
 	@Override

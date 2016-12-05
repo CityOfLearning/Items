@@ -27,6 +27,8 @@ public class DynItemManager {
 	public static Item old_coin;
 	public static Item crystal;
 
+	public static Item dynLogo;
+
 	public static void load() {
 		final Item.ToolMaterial bronze = EnumHelper.addToolMaterial("BRONZE", 2, 170, 5.0f, 2.0f, 15);
 		final Item.ToolMaterial emerald = EnumHelper.addToolMaterial("REALEMERALD", 3, 1000, 8.0f, 4.0f, 10);
@@ -48,6 +50,8 @@ public class DynItemManager {
 		DynItemManager.coinEmerald = new GenericItem(26723).setUnlocalizedName("npcCoinEmerald");
 		DynItemManager.old_coin = new GenericItem().setUnlocalizedName("npcAncientCoin");
 		DynItemManager.crystal = new GenericItem(26954).setUnlocalizedName("npcCrystal");
+
+		DynItemManager.dynLogo = new GenericItem().setUnlocalizedName("dyn_logo").setCreativeTab(null);
 
 		DynItemManager.key1 = new GenericItem(26964).setUnlocalizedName("npcKey");
 		DynItemManager.key2 = new GenericItem(26965).setUnlocalizedName("npcKey2");

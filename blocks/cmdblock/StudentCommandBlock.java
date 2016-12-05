@@ -22,6 +22,7 @@ public class StudentCommandBlock extends BlockContainer {
 
 	public StudentCommandBlock() {
 		super(Material.iron, MapColor.adobeColor);
+		setHardness(.5f);
 	}
 
 	/**
