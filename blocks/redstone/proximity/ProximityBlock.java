@@ -33,7 +33,6 @@ public class ProximityBlock extends Block implements ITileEntityProvider {
 		super(Material.circuits);
 		setDefaultState(blockState.getBaseState().withProperty(POWERED, Boolean.valueOf(false)));
 		setTickRandomly(true);
-		setCreativeTab(CreativeTabs.tabRedstone);
 	}
 
 	@Override

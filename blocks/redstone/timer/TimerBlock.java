@@ -31,7 +31,6 @@ public class TimerBlock extends Block implements ITileEntityProvider {
 		super(Material.circuits);
 		setDefaultState(blockState.getBaseState().withProperty(POWERED, Boolean.valueOf(false)));
 		setBlockUnbreakable();
-		setCreativeTab(CreativeTabs.tabRedstone);
 	}
 
 	@Override
