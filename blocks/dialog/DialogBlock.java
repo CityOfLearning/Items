@@ -87,7 +87,7 @@ public class DialogBlock extends Block implements ITileEntityProvider {
 
 					if (players.contains(Minecraft.getMinecraft().thePlayer)) {
 						RenderMod.proxy.toggleDialogHud(((DialogBlockTileEntity) tileentity).getEntity(), true,
-								((DialogBlockTileEntity) tileentity).getText(), 150);
+								((DialogBlockTileEntity) tileentity).getText(), 170);
 					}
 				}
 			}

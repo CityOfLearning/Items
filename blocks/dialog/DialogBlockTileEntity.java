@@ -81,7 +81,7 @@ public class DialogBlockTileEntity extends TileEntity {
 						entity = new DisplayEntityHead(worldObj);
 					} else if (entityName.equals("DisplayEntity")) {
 						entity = new DisplayEntity(worldObj);
-					} else if (entityName.equals("DYNRobot")) {
+					} else if (entityName.equals("Robot")) {
 						entity = new DynRobotEntity(worldObj);
 					} else if (entityName.equals("Dummy")) {
 						entity = new CrashTestEntity(worldObj);
@@ -100,6 +100,7 @@ public class DialogBlockTileEntity extends TileEntity {
 					DYNServerMod.logger.warn("Got a null pointer reading entity NBT, likely due to ageable entity");
 				}
 			}
+
 		}
 	}
 
@@ -144,6 +145,7 @@ public class DialogBlockTileEntity extends TileEntity {
 				DYNServerMod.logger.warn("Got a null pointer writing entity NBT, likely due to ageable entity");
 			}
 			compound.setTag("entity", entityTag);
+
 		}
 	}
 }
