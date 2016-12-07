@@ -174,6 +174,7 @@ public class GhostEntity extends EntityFlying {
 	}
 
 	private int followPlayerCooldown = 0;
+	private float alpha;
 
 	public GhostEntity(World par1World) {
 		super(par1World);
@@ -181,6 +182,7 @@ public class GhostEntity extends EntityFlying {
 		setSize(0.5F, 0.5F);
 		((PathNavigateGround) getNavigator()).setAvoidsWater(false);
 		noClip = true;
+		alpha = 0.1f;
 
 		moveHelper = new GhostEntity.GhostMoveHelper(this);
 		tasks.addTask(5, new GhostEntity.AIRandomFly(this));
@@ -231,9 +233,9 @@ public class GhostEntity extends EntityFlying {
 
 	public float getAlpha() {
 		if (getAttackTarget() != null) {
-			return (float) Math.max((1 - (getPosition().distanceSq(getAttackTarget().getPosition()) / 50)), .1f);
+			return (float) Math.max((1 - (getPosition().distanceSq(getAttackTarget().getPosition()) / 50)), alpha);
 		}
-		return 0.1f;
+		return alpha;
 	}
 
 	@Override
@@ -308,5 +310,9 @@ public class GhostEntity extends EntityFlying {
 				setDead();
 			}
 		}
+	}
+
+	public void setAlpha(float alpha) {
+		this.alpha = alpha;
 	}
 }
