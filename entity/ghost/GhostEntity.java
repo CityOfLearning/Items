@@ -179,7 +179,7 @@ public class GhostEntity extends EntityFlying {
 	public GhostEntity(World par1World) {
 		super(par1World);
 
-		setSize(0.5F, 0.5F);
+		setSize(0.5F, 2F);
 		((PathNavigateGround) getNavigator()).setAvoidsWater(false);
 		noClip = true;
 		alpha = 0.1f;
