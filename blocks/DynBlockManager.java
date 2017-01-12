@@ -1,5 +1,6 @@
 package com.dyn.fixins.blocks;
 
+import com.dyn.DYNServerMod;
 import com.dyn.fixins.DynFixinsMod;
 import com.dyn.fixins.blocks.cmdblock.StudentCommandBlock;
 import com.dyn.fixins.blocks.cmdblock.tileentity.StudentCommandBlockTileEntity;
@@ -13,6 +14,7 @@ import com.dyn.fixins.blocks.redstone.timer.StudentTimerBlock;
 import com.dyn.fixins.blocks.redstone.timer.TimerBlock;
 import com.dyn.fixins.blocks.redstone.timer.TimerBlockTileEntity;
 import com.dyn.fixins.tab.DYNTab;
+import com.dyn.utils.PlayerLevel;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -59,6 +61,12 @@ public class DynBlockManager {
 
 		studentTimerBlock = new StudentTimerBlock().setUnlocalizedName("student_timer_block").setCreativeTab(dynTab);
 		GameRegistry.registerBlock(studentTimerBlock, "student_timer_block");
+
+		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerLevel.STUDENT)) {
+			dialogBlock.setCreativeTab(dynTab);
+			proximityBlock.setCreativeTab(dynTab);
+			timerBlock.setCreativeTab(dynTab);
+		}
 	}
 
 	public static void register() {
