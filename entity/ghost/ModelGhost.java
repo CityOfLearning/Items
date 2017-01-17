@@ -48,18 +48,20 @@ public class ModelGhost extends ModelBase {
 		RArm.rotateAngleX = (0.33F + (MathHelper.cos(f2 * 0.36F) * 3.1415927F * 0.05F));
 
 		GlStateManager.pushMatrix();
-		GlStateManager.enableBlend();
-		GlStateManager.enableNormalize();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GlStateManager.color(1, 1, 1, ((GhostEntity) entity).getAlpha());
-		GlStateManager.translate(0, -1, 0);
-		GlStateManager.scale(1.5, 1.5, 1.5);
+		{
+			GlStateManager.enableBlend();
+			GlStateManager.enableNormalize();
+			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			GlStateManager.color(1, 1, 1, ((GhostEntity) entity).getAlpha());
+			GlStateManager.translate(0, -1, 0);
+			GlStateManager.scale(1.5, 1.5, 1.5);
 
-		HeadAndBody.render(f5);
-		LArm.render(f5);
-		RArm.render(f5);
+			HeadAndBody.render(f5);
+			LArm.render(f5);
+			RArm.render(f5);
 
-		GlStateManager.disableBlend();
+			GlStateManager.disableBlend();
+		}
 		GlStateManager.popMatrix();
 	}
 

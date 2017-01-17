@@ -1,9 +1,8 @@
 package com.dyn.fixins.entity.ghost;
 
-import org.lwjgl.opengl.GL11;
-
 import com.dyn.fixins.reference.Reference;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -41,7 +40,7 @@ public class RenderGhostEntity extends RenderLiving {
 	}
 
 	protected void preRenderScale(GhostEntity par1Entity, float par2) {
-		GL11.glScalef(scale, scale, scale);
+		GlStateManager.scale(scale, scale, scale);
 	}
 
 	public void renderGhostEntity(GhostEntity par1GhostEntity, double par2, double par4, double par6, float par8,
