@@ -14,11 +14,14 @@ import com.dyn.fixins.blocks.redstone.timer.StudentTimerBlock;
 import com.dyn.fixins.blocks.redstone.timer.TimerBlock;
 import com.dyn.fixins.blocks.redstone.timer.TimerBlockTileEntity;
 import com.dyn.fixins.tab.DYNTab;
-import com.dyn.utils.PlayerLevel;
+import com.dyn.utils.PlayerAccessLevel;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import noppes.npcs.CustomItems;
 
 public class DynBlockManager {
 
@@ -62,10 +65,31 @@ public class DynBlockManager {
 		studentTimerBlock = new StudentTimerBlock().setUnlocalizedName("student_timer_block").setCreativeTab(dynTab);
 		GameRegistry.registerBlock(studentTimerBlock, "student_timer_block");
 
-		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerLevel.STUDENT)) {
+		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerAccessLevel.STUDENT)) {
 			dialogBlock.setCreativeTab(dynTab);
 			proximityBlock.setCreativeTab(dynTab);
 			timerBlock.setCreativeTab(dynTab);
+
+		}
+
+		if ((FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+				&& (DYNServerMod.accessLevel != PlayerAccessLevel.ADMIN)) {
+			DYNServerMod.logger.info("Unregistering Items");
+			CustomItems.wand.setCreativeTab(null);
+			CustomItems.cloner.setCreativeTab(null);
+			CustomItems.scripter.setCreativeTab(null);
+			CustomItems.moving.setCreativeTab(null);
+			CustomItems.mount.setCreativeTab(null);
+			CustomItems.teleporter.setCreativeTab(null);
+			CustomItems.redstoneBlock.setCreativeTab(null);
+			CustomItems.waypoint.setCreativeTab(null);
+			CustomItems.border.setCreativeTab(null);
+			CustomItems.scripted.setCreativeTab(null);
+			CustomItems.scriptedDoor.setCreativeTab(null);
+			CustomItems.scriptedDoorTool.setCreativeTab(null);
+			CustomItems.builder.setCreativeTab(null);
+			CustomItems.copy.setCreativeTab(null);
+			CustomItems.trading.setCreativeTab(null);
 		}
 	}
 
