@@ -5,7 +5,7 @@ import java.util.Random;
 
 import com.dyn.DYNServerMod;
 import com.dyn.render.RenderMod;
-import com.dyn.utils.PlayerLevel;
+import com.dyn.utils.PlayerAccessLevel;
 import com.rabbit.gui.component.display.entity.DisplayEntityHead;
 
 import net.minecraft.block.Block;
@@ -45,7 +45,7 @@ public class DialogBlock extends Block implements ITileEntityProvider {
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		// without this it fires twice
 		if (worldIn.isRemote) {
-			if (DYNServerMod.accessLevel == PlayerLevel.ADMIN) {
+			if (DYNServerMod.accessLevel == PlayerAccessLevel.ADMIN) {
 				TileEntity tileentity = worldIn.getTileEntity(pos);
 				if (tileentity instanceof DialogBlockTileEntity) {
 					RenderMod.proxy.openEditDialogInterface((DialogBlockTileEntity) tileentity);
