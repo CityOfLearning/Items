@@ -1,6 +1,4 @@
-package com.dyn.fixins.blocks.cmdblock.tileentity;
-
-import com.dyn.fixins.blocks.cmdblock.StudentCommandBlockLogic;
+package com.dyn.fixins.blocks.cmdblock;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.command.CommandResultStats;

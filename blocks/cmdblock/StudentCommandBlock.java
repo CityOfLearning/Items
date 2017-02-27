@@ -2,8 +2,6 @@ package com.dyn.fixins.blocks.cmdblock;
 
 import java.util.Random;
 
-import com.dyn.fixins.blocks.cmdblock.tileentity.StudentCommandBlockTileEntity;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
