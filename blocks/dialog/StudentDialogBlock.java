@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.dyn.render.RenderMod;
+import com.google.common.collect.Lists;
 import com.rabbit.gui.component.display.entity.DisplayEntityHead;
 
 import net.minecraft.block.Block;
@@ -22,20 +23,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class StudentDialogBlock extends Block implements ITileEntityProvider {
-
+public class StudentDialogBlock extends DialogBlock {
+	
 	public StudentDialogBlock() {
-		super(Material.clay);
+		super();
 		setHardness(.5f);
-	}
-
-	/**
-	 * Returns a new instance of a block's tile entity class. Called on placing
-	 * the block.
-	 */
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new DialogBlockTileEntity();
 	}
 
 	@Override
@@ -52,46 +44,4 @@ public class StudentDialogBlock extends Block implements ITileEntityProvider {
 		}
 		return true;
 	}
-
-	// Called just after the player places a block.
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) {
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-		TileEntity tileentity = worldIn.getTileEntity(pos);
-		if (tileentity instanceof DialogBlockTileEntity) {
-			DialogBlockTileEntity tileEntityData = (DialogBlockTileEntity) tileentity;
-			tileEntityData.setData("", 10, 4, 10);
-			tileEntityData.setEntity(new DisplayEntityHead(worldIn), 90);
-		}
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-		if (Minecraft.getMinecraft().inGameHasFocus) {
-			TileEntity tileentity = worldIn.getTileEntity(pos);
-			if (tileentity instanceof DialogBlockTileEntity) {
-				BlockPos c1 = ((DialogBlockTileEntity) tileentity).getCorner1();
-				BlockPos c2 = ((DialogBlockTileEntity) tileentity).getCorner2();
-				if ((c1 != null) && (c2 != null)) {
-					List<EntityPlayer> players = worldIn.getEntitiesWithinAABB(EntityPlayer.class,
-							AxisAlignedBB.fromBounds(pos.getX() - c1.getX(), pos.getY() - c1.getY(),
-									pos.getZ() - c1.getZ(), pos.getX() + c2.getX(), pos.getY() + c2.getY(),
-									pos.getZ() + c2.getZ()));
-
-					if (players.contains(Minecraft.getMinecraft().thePlayer)) {
-						RenderMod.proxy.toggleDialogHud(((DialogBlockTileEntity) tileentity).getEntity(), true,
-								((DialogBlockTileEntity) tileentity).getText(), 170);
-					}
-				}
-			}
-		}
-	}
-
-	@Override
-	public int tickRate(World worldIn) {
-		return 10;
-	}
-
 }

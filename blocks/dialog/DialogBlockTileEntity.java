@@ -1,14 +1,20 @@
 package com.dyn.fixins.blocks.dialog;
 
+import java.util.List;
+
 import com.dyn.DYNServerMod;
 import com.dyn.fixins.entity.crash.CrashTestEntity;
 import com.dyn.fixins.entity.ghost.GhostEntity;
+import com.dyn.render.RenderMod;
 import com.dyn.robot.entity.DynRobotEntity;
+import com.google.common.collect.Lists;
 import com.rabbit.gui.component.display.entity.DisplayEntity;
 import com.rabbit.gui.component.display.entity.DisplayEntityHead;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -21,6 +27,9 @@ public class DialogBlockTileEntity extends TileEntity {
 	private BlockPos corner1;
 	private BlockPos corner2;
 	private String text;
+	private boolean interupt = false;
+
+	private List<EntityPlayer> detectedPlayers = Lists.newArrayList();
 
 	// Entity Stuff
 	private int entityId;
@@ -71,6 +80,7 @@ public class DialogBlockTileEntity extends TileEntity {
 		corner2 = new BlockPos(compound.getInteger("tileX2"), compound.getInteger("tileY2"),
 				compound.getInteger("tileZ2"));
 		entitySkin = compound.getString("skin");
+		interupt = compound.getBoolean("interupt");
 		if (compound.hasKey("entity")) {
 			entityId = compound.getInteger("entityId");
 			if (entityId == 90) {
@@ -135,6 +145,7 @@ public class DialogBlockTileEntity extends TileEntity {
 		compound.setInteger("tileY2", corner2.getY());
 		compound.setInteger("tileZ2", corner2.getZ());
 		compound.setString("skin", entitySkin);
+		compound.setBoolean("interupt", interupt);
 		if (entity != null) {
 			compound.setInteger("entityId", entityId);
 			compound.setString("entityName", entityName);
@@ -146,6 +157,31 @@ public class DialogBlockTileEntity extends TileEntity {
 			}
 			compound.setTag("entity", entityTag);
 
+		}
+	}
+
+	public boolean doesInterrupt() {
+		return interupt;
+	}
+
+	public void setInterruptible(boolean isInterruptible) {
+		this.interupt = isInterruptible;
+	}
+
+	public void updatePlayerList(List<EntityPlayer> players) {
+		if (players.size() > 0) {
+			if (players.size() != detectedPlayers.size()) {
+				List<EntityPlayer> allDPlayers = players;
+				allDPlayers.removeAll(detectedPlayers);
+				for (EntityPlayer player : allDPlayers) {
+					if (Minecraft.getMinecraft().thePlayer == player) {
+						RenderMod.proxy.toggleDialogHud(getEntity(), true, getText(), 0, true);
+					}
+				}
+				detectedPlayers = players;
+			}
+		} else {
+			detectedPlayers.clear();
 		}
 	}
 }

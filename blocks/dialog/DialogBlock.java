@@ -6,6 +6,7 @@ import java.util.Random;
 import com.dyn.DYNServerMod;
 import com.dyn.render.RenderMod;
 import com.dyn.utils.PlayerAccessLevel;
+import com.google.common.collect.Lists;
 import com.rabbit.gui.component.display.entity.DisplayEntityHead;
 
 import net.minecraft.block.Block;
@@ -84,10 +85,13 @@ public class DialogBlock extends Block implements ITileEntityProvider {
 							AxisAlignedBB.fromBounds(pos.getX() - c1.getX(), pos.getY() - c1.getY(),
 									pos.getZ() - c1.getZ(), pos.getX() + c2.getX(), pos.getY() + c2.getY(),
 									pos.getZ() + c2.getZ()));
-
-					if (players.contains(Minecraft.getMinecraft().thePlayer)) {
-						RenderMod.proxy.toggleDialogHud(((DialogBlockTileEntity) tileentity).getEntity(), true,
-								((DialogBlockTileEntity) tileentity).getText(), 170);
+					if (!((DialogBlockTileEntity) tileentity).doesInterrupt()) {
+						if (players.contains(Minecraft.getMinecraft().thePlayer)) {
+							RenderMod.proxy.toggleDialogHud(((DialogBlockTileEntity) tileentity).getEntity(), true,
+									((DialogBlockTileEntity) tileentity).getText(), 170, false);
+						}
+					} else {
+						((DialogBlockTileEntity) tileentity).updatePlayerList(players);
 					}
 				}
 			}
