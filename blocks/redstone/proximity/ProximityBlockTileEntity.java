@@ -1,6 +1,14 @@
 package com.dyn.fixins.blocks.redstone.proximity;
 
+import java.util.List;
+
+import com.dyn.render.RenderMod;
+import com.google.common.collect.Lists;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -14,6 +22,8 @@ public class ProximityBlockTileEntity extends TileEntity {
 	private BlockPos corner1;
 	private BlockPos corner2;
 
+	private List<EntityPlayer> detectedPlayers = Lists.newArrayList();
+	
 	public BlockPos getCorner1() {
 		return corner1;
 	}
@@ -76,5 +86,29 @@ public class ProximityBlockTileEntity extends TileEntity {
 		compound.setInteger("tileX2", corner2.getX());
 		compound.setInteger("tileY2", corner2.getY());
 		compound.setInteger("tileZ2", corner2.getZ());
+	}
+	
+	public void updateProximityList(List<EntityPlayer> players, IBlockState state, World worldIn, ProximityBlock block) {
+		if (players.size() > 0) {
+			if (players.size() != detectedPlayers.size()) {
+				detectedPlayers = players;
+				if (state.getValue(ProximityBlock.POWERED).booleanValue()) {
+					worldIn.setBlockState(pos, state.withProperty(ProximityBlock.POWERED, Boolean.valueOf(false)), 3);
+					block.notifyNeighbors(worldIn, pos);
+
+				}
+			} else {
+				if (!state.getValue(ProximityBlock.POWERED).booleanValue()) {
+					worldIn.setBlockState(pos, state.withProperty(ProximityBlock.POWERED, Boolean.valueOf(true)), 3);
+					block.notifyNeighbors(worldIn, pos);
+
+				}
+			}
+		} else {
+			if (state.getValue(ProximityBlock.POWERED).booleanValue()) {
+				worldIn.setBlockState(pos, state.withProperty(ProximityBlock.POWERED, Boolean.valueOf(false)), 3);
+				block.notifyNeighbors(worldIn, pos);
+			}
+		}
 	}
 }

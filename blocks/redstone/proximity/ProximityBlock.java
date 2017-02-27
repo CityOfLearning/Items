@@ -6,6 +6,7 @@ import java.util.Random;
 import com.dyn.DYNServerMod;
 import com.dyn.render.RenderMod;
 import com.dyn.utils.PlayerAccessLevel;
+import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -31,6 +32,7 @@ public class ProximityBlock extends Block implements ITileEntityProvider {
 	public ProximityBlock() {
 		super(Material.circuits);
 		setDefaultState(blockState.getBaseState().withProperty(POWERED, Boolean.valueOf(false)));
+		this.setBlockUnbreakable();
 		setTickRandomly(true);
 	}
 
@@ -95,7 +97,7 @@ public class ProximityBlock extends Block implements ITileEntityProvider {
 		return state.getValue(POWERED).booleanValue() ? 15 : 0;
 	}
 
-	private void notifyNeighbors(World worldIn, BlockPos pos) {
+	public void notifyNeighbors(World worldIn, BlockPos pos) {
 		worldIn.notifyNeighborsOfStateChange(pos, this);
 		worldIn.notifyNeighborsOfStateChange(pos.up(), this);
 		worldIn.notifyNeighborsOfStateChange(pos.down(), this);
@@ -147,19 +149,7 @@ public class ProximityBlock extends Block implements ITileEntityProvider {
 				List<EntityPlayer> players = worldIn.getEntitiesWithinAABB(EntityPlayer.class,
 						AxisAlignedBB.fromBounds(pos.getX() - c1.getX(), pos.getY() - c1.getY(), pos.getZ() - c1.getZ(),
 								pos.getX() + c2.getX(), pos.getY() + c2.getY(), pos.getZ() + c2.getZ()));
-
-				if (players.size() > 0) {
-					// emit redstone signal
-					if (!state.getValue(POWERED).booleanValue()) {
-						worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)), 3);
-						notifyNeighbors(worldIn, pos);
-					}
-				} else {
-					if (state.getValue(POWERED).booleanValue()) {
-						worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)), 3);
-						notifyNeighbors(worldIn, pos);
-					}
-				}
+				((ProximityBlockTileEntity) tileentity).updateProximityList(players, state, worldIn, this);
 				worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
 			}
 		}
