@@ -2,17 +2,21 @@ package com.dyn.fixins.proxy;
 
 import com.dyn.fixins.blocks.cmdblock.StudentCommandBlockLogic;
 import com.dyn.fixins.entity.crash.CrashTestEntity;
-import com.dyn.fixins.entity.crash.CrashTestEntityRenderer;
+import com.dyn.fixins.entity.crash.ModelCrashTestEntity;
+import com.dyn.fixins.entity.crash.RenderCrashTestEntity;
 import com.dyn.fixins.entity.ghost.GhostEntity;
-import com.dyn.fixins.entity.ghost.GhostEntityRenderer;
+import com.dyn.fixins.entity.ghost.ModelGhost;
+import com.dyn.fixins.entity.ghost.RenderGhostEntity;
 import com.dyn.fixins.reference.Reference;
 import com.dyn.render.gui.command.StudentComamndGui;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -30,8 +34,18 @@ public class Client implements Proxy {
 
 	@Override
 	public void preInit() {
-		RenderingRegistry.registerEntityRenderingHandler(CrashTestEntity.class, new CrashTestEntityRenderer());
-		RenderingRegistry.registerEntityRenderingHandler(GhostEntity.class, new GhostEntityRenderer());
+		RenderingRegistry.registerEntityRenderingHandler(CrashTestEntity.class, new IRenderFactory<CrashTestEntity>() {
+			@Override
+			public Render<? super CrashTestEntity> createRenderFor(RenderManager manager) {
+				return new RenderCrashTestEntity(manager, new ModelCrashTestEntity(), 0.3F);
+			}
+		});
+		RenderingRegistry.registerEntityRenderingHandler(GhostEntity.class, new IRenderFactory<GhostEntity>() {
+			@Override
+			public Render<? super GhostEntity> createRenderFor(RenderManager manager) {
+				return new RenderGhostEntity(manager, new ModelGhost(), 0.0F, 0.65F);
+			}
+		});
 	}
 
 	@Override
