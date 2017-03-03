@@ -13,6 +13,7 @@ import com.rabbit.gui.component.display.entity.DisplayEntityHead;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,6 +37,10 @@ public class DialogBlockTileEntity extends TileEntity {
 	private String entitySkin = "";
 	private EntityLivingBase entity;
 	private String entityName = "";
+
+	public boolean doesInterrupt() {
+		return interupt;
+	}
 
 	public BlockPos getCorner1() {
 		return corner1;
@@ -84,7 +89,7 @@ public class DialogBlockTileEntity extends TileEntity {
 		if (compound.hasKey("entity")) {
 			entityId = compound.getInteger("entityId");
 			if (entityId == 90) {
-				entity = (EntityLivingBase) EntityList.createEntityByName(compound.getString("entityName"), worldObj);
+				entity = (EntityLiving) EntityList.createEntityByName(compound.getString("entityName"), worldObj);
 				entityName = compound.getString("entityName");
 				if (entity == null) {
 					if (entityName.equals("DisplayHead")) {
@@ -128,10 +133,45 @@ public class DialogBlockTileEntity extends TileEntity {
 		setData(text, new BlockPos(x1, y1, z1), new BlockPos(x2, y2, z2));
 	}
 
-	public void setEntity(EntityLivingBase entity, int id) {
-		entityName = entity.getName();
+	public void setEntity(EntityLiving entity, int id) {
+		entityName = EntityList.getEntityString(entity);
+		if ((entityName == null) || entityName.isEmpty()) {
+			if (entity instanceof DisplayEntityHead) {
+				entityName = "DisplayHead";
+			} else if (entity instanceof DisplayEntity) {
+				entityName = "DisplayEntity";
+			} /*
+				 * else if (entityName.equals("Robot")) { entity = new
+				 * DynRobotEntity(worldObj); } else if
+				 * (entityName.equals("Dummy")) { entity = new
+				 * CrashTestEntity(worldObj); } else if
+				 * (entityName.equals("Ghost")) { entity = new
+				 * GhostEntity(worldObj); }
+				 */
+		}
 		entityId = id;
 		this.entity = entity;
+	}
+
+	public void setInterruptible(boolean isInterruptible) {
+		interupt = isInterruptible;
+	}
+
+	public void updatePlayerList(List<EntityPlayer> players) {
+		if (players.size() > 0) {
+			if (players.size() != detectedPlayers.size()) {
+				List<EntityPlayer> allDPlayers = players;
+				allDPlayers.removeAll(detectedPlayers);
+				for (EntityPlayer player : allDPlayers) {
+					if (Minecraft.getMinecraft().thePlayer == player) {
+						RenderMod.proxy.toggleDialogHud(getEntity(), true, getText(), 0, true);
+					}
+				}
+				detectedPlayers = players;
+			}
+		} else {
+			detectedPlayers.clear();
+		}
 	}
 
 	@Override
@@ -157,31 +197,6 @@ public class DialogBlockTileEntity extends TileEntity {
 			}
 			compound.setTag("entity", entityTag);
 
-		}
-	}
-
-	public boolean doesInterrupt() {
-		return interupt;
-	}
-
-	public void setInterruptible(boolean isInterruptible) {
-		this.interupt = isInterruptible;
-	}
-
-	public void updatePlayerList(List<EntityPlayer> players) {
-		if (players.size() > 0) {
-			if (players.size() != detectedPlayers.size()) {
-				List<EntityPlayer> allDPlayers = players;
-				allDPlayers.removeAll(detectedPlayers);
-				for (EntityPlayer player : allDPlayers) {
-					if (Minecraft.getMinecraft().thePlayer == player) {
-						RenderMod.proxy.toggleDialogHud(getEntity(), true, getText(), 0, true);
-					}
-				}
-				detectedPlayers = players;
-			}
-		} else {
-			detectedPlayers.clear();
 		}
 	}
 }
