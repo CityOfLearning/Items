@@ -33,8 +33,8 @@ public class DynBlockManager {
 	public static Block dialogBlock;
 	public static Block proximityBlock;
 	public static Block timerBlock;
-	
-//	public static Block arrowBlock;
+
+	// public static Block arrowBlock;
 
 	public static CreativeTabs dynTab = new DYNTab();
 
@@ -66,9 +66,10 @@ public class DynBlockManager {
 
 		studentTimerBlock = new StudentTimerBlock().setUnlocalizedName("student_timer_block").setCreativeTab(dynTab);
 		GameRegistry.registerBlock(studentTimerBlock, "student_timer_block");
-		
-//		arrowBlock = (new BlockArrowSign().setUnlocalizedName("arrow_block")).setCreativeTab(dynTab);
-//		GameRegistry.registerBlock(arrowBlock, "arrow_block");
+
+		// arrowBlock = (new
+		// BlockArrowSign().setUnlocalizedName("arrow_block")).setCreativeTab(dynTab);
+		// GameRegistry.registerBlock(arrowBlock, "arrow_block");
 
 		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerAccessLevel.STUDENT)) {
 			dialogBlock.setCreativeTab(dynTab);
@@ -103,7 +104,7 @@ public class DynBlockManager {
 		DynFixinsMod.proxy.registerBlockItem(dialogBlock);
 		DynFixinsMod.proxy.registerBlockItem(proximityBlock);
 		DynFixinsMod.proxy.registerBlockItem(timerBlock);
-//		DynFixinsMod.proxy.registerBlockItem(arrowBlock);
+		// DynFixinsMod.proxy.registerBlockItem(arrowBlock);
 
 		// Student Items
 		DynFixinsMod.proxy.registerBlockItem(studentCmdBlock);

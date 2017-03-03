@@ -6,7 +6,6 @@ import java.util.Random;
 import com.dyn.DYNServerMod;
 import com.dyn.render.RenderMod;
 import com.dyn.utils.PlayerAccessLevel;
-import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -32,7 +31,7 @@ public class ProximityBlock extends Block implements ITileEntityProvider {
 	public ProximityBlock() {
 		super(Material.circuits);
 		setDefaultState(blockState.getBaseState().withProperty(POWERED, Boolean.valueOf(false)));
-		this.setBlockUnbreakable();
+		setBlockUnbreakable();
 		setTickRandomly(true);
 	}
 

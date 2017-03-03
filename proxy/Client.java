@@ -9,14 +9,12 @@ import com.dyn.fixins.entity.ghost.ModelGhost;
 import com.dyn.fixins.entity.ghost.RenderGhostEntity;
 import com.dyn.fixins.reference.Reference;
 import com.dyn.render.gui.command.StudentComamndGui;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -34,18 +32,10 @@ public class Client implements Proxy {
 
 	@Override
 	public void preInit() {
-		RenderingRegistry.registerEntityRenderingHandler(CrashTestEntity.class, new IRenderFactory<CrashTestEntity>() {
-			@Override
-			public Render<? super CrashTestEntity> createRenderFor(RenderManager manager) {
-				return new RenderCrashTestEntity(manager, new ModelCrashTestEntity(), 0.3F);
-			}
-		});
-		RenderingRegistry.registerEntityRenderingHandler(GhostEntity.class, new IRenderFactory<GhostEntity>() {
-			@Override
-			public Render<? super GhostEntity> createRenderFor(RenderManager manager) {
-				return new RenderGhostEntity(manager, new ModelGhost(), 0.0F, 0.65F);
-			}
-		});
+		RenderingRegistry.registerEntityRenderingHandler(CrashTestEntity.class,
+				manager -> new RenderCrashTestEntity(manager, new ModelCrashTestEntity(), 0.3F));
+		RenderingRegistry.registerEntityRenderingHandler(GhostEntity.class,
+				manager -> new RenderGhostEntity(manager, new ModelGhost(), 0.0F, 0.65F));
 	}
 
 	@Override

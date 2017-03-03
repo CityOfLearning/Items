@@ -2,12 +2,9 @@ package com.dyn.fixins.blocks.redstone.proximity;
 
 import java.util.List;
 
-import com.dyn.render.RenderMod;
 import com.google.common.collect.Lists;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -23,7 +20,7 @@ public class ProximityBlockTileEntity extends TileEntity {
 	private BlockPos corner2;
 
 	private List<EntityPlayer> detectedPlayers = Lists.newArrayList();
-	
+
 	public BlockPos getCorner1() {
 		return corner1;
 	}
@@ -77,18 +74,8 @@ public class ProximityBlockTileEntity extends TileEntity {
 		return (oldState.getBlock() != newSate.getBlock());
 	}
 
-	@Override
-	public void writeToNBT(NBTTagCompound compound) {
-		super.writeToNBT(compound);
-		compound.setInteger("tileX1", corner1.getX());
-		compound.setInteger("tileY1", corner1.getY());
-		compound.setInteger("tileZ1", corner1.getZ());
-		compound.setInteger("tileX2", corner2.getX());
-		compound.setInteger("tileY2", corner2.getY());
-		compound.setInteger("tileZ2", corner2.getZ());
-	}
-	
-	public void updateProximityList(List<EntityPlayer> players, IBlockState state, World worldIn, ProximityBlock block) {
+	public void updateProximityList(List<EntityPlayer> players, IBlockState state, World worldIn,
+			ProximityBlock block) {
 		if (players.size() > 0) {
 			if (players.size() != detectedPlayers.size()) {
 				detectedPlayers = players;
@@ -110,5 +97,16 @@ public class ProximityBlockTileEntity extends TileEntity {
 				block.notifyNeighbors(worldIn, pos);
 			}
 		}
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound compound) {
+		super.writeToNBT(compound);
+		compound.setInteger("tileX1", corner1.getX());
+		compound.setInteger("tileY1", corner1.getY());
+		compound.setInteger("tileZ1", corner1.getZ());
+		compound.setInteger("tileX2", corner2.getX());
+		compound.setInteger("tileY2", corner2.getY());
+		compound.setInteger("tileZ2", corner2.getZ());
 	}
 }

@@ -6,7 +6,6 @@ import java.util.Random;
 import com.dyn.DYNServerMod;
 import com.dyn.render.RenderMod;
 import com.dyn.utils.PlayerAccessLevel;
-import com.google.common.collect.Lists;
 import com.rabbit.gui.component.display.entity.DisplayEntityHead;
 
 import net.minecraft.block.Block;
