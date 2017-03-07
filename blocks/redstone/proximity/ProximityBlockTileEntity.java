@@ -2,8 +2,8 @@ package com.dyn.fixins.blocks.redstone.proximity;
 
 import java.util.List;
 
-import com.forgeessentials.commands.util.MobTypeRegistry;
 import com.forgeessentials.commons.EnumMobType;
+import com.forgeessentials.commons.MobTypeRegistry;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.state.IBlockState;
