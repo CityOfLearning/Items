@@ -7,11 +7,10 @@ import java.util.regex.Pattern;
 import com.dyn.DYNServerMod;
 import com.dyn.fixins.entity.crash.CrashTestEntity;
 import com.dyn.fixins.entity.ghost.GhostEntity;
-import com.dyn.render.hud.decision.DecisionHud;
+import com.dyn.render.RenderMod;
 import com.dyn.robot.entity.DynRobotEntity;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.rabbit.gui.RabbitGui;
 import com.rabbit.gui.component.display.entity.DisplayEntity;
 import com.rabbit.gui.component.display.entity.DisplayEntityHead;
 
@@ -31,62 +30,72 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class DecisionBlockTileEntity extends TileEntity {
-		
+
 	public static class Choice {
-		
+
 		public static final Choice NONE = new Choice(0, "none");
 		public static final Choice REDSTONE = new Choice(1, "none");
-		
+
+		public static Choice parse(String toParse) {
+			if (toParse.contains("redstone")) {
+				return REDSTONE;
+			} else if (toParse.contains("cmd")) {
+				return new Choice(2, toParse.split(Pattern.quote("|"))[1]);
+			}
+			return NONE;
+		}
+
 		private String value;
+
 		private int id;
+
+		public Choice(int id, String value) {
+			this.id = id;
+			this.value = value;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if ((o instanceof Choice) && (((Choice) o).getId() == id) && (((Choice) o).getValue() == value)) {
+				return true;
+			}
+			return false;
+		}
 
 		public int getId() {
 			return id;
 		}
 
-		public Choice(int id, String value){
-			this.id = id;
-			this.value = value;
+		public String getType() {
+			if (id == 0) {
+				return "NONE";
+			} else if (id == 1) {
+				return "REDSTONE";
+			} else {
+				return "COMMAND";
+			}
 		}
-		
-		public void setValue(String val){
-			this.value = val;
-		}
-		
-		public String getValue(){
+
+		public String getValue() {
 			return value;
 		}
-		
-		public static Choice parse(String toParse){
-			if(toParse.contains("redstone")){
-				return REDSTONE;
-			} else if(toParse.contains("cmd")){
-				return new Choice(2, toParse.split(Pattern.quote("|"))[1]);
-			}
-			return NONE;
+
+		public void setValue(String val) {
+			value = val;
 		}
-		
-		public String toString(){
-			if(id == 0){return "none";}
-			else if(id == 1){return "redstone";}
-			else{return "cmd|"+value;}
-		}
-		
-		public String getType(){
-			if(id == 0){return "NONE";}
-			else if(id == 1){return "REDSTONE";}
-			else{return "COMMAND";}
-		}
-		
+
 		@Override
-		public boolean equals(Object o){
-			if(o instanceof Choice && ((Choice) o).getId() == id && ((Choice) o).getValue() == value){
-				return true;
+		public String toString() {
+			if (id == 0) {
+				return "none";
+			} else if (id == 1) {
+				return "redstone";
+			} else {
+				return "cmd|" + value;
 			}
-			return false;
 		}
 	}
-	
+
 	private BlockPos corner1;
 	private BlockPos corner2;
 	private String text;
@@ -99,6 +108,14 @@ public class DecisionBlockTileEntity extends TileEntity {
 	private String entitySkin = "";
 	private EntityLivingBase entity;
 	private String entityName = "";
+
+	public void clearList() {
+		detectedPlayers.clear();
+	}
+
+	public Map<String, Choice> getChoices() {
+		return choices;
+	}
 
 	public BlockPos getCorner1() {
 		return corner1;
@@ -183,6 +200,10 @@ public class DecisionBlockTileEntity extends TileEntity {
 		}
 	}
 
+	public void setChoices(Map<String, Choice> choice) {
+		choices = choice;
+	}
+
 	public void setData(String text, BlockPos corner1, BlockPos corner2) {
 		this.text = text;
 		this.corner1 = corner1;
@@ -210,6 +231,11 @@ public class DecisionBlockTileEntity extends TileEntity {
 		this.entity = entity;
 	}
 
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		return (oldState.getBlock() != newSate.getBlock());
+	}
+
 	public void updatePlayerList(List<EntityPlayer> players) {
 		if (players.size() > 0) {
 			if (players.size() != detectedPlayers.size()) {
@@ -217,16 +243,12 @@ public class DecisionBlockTileEntity extends TileEntity {
 				allDPlayers.removeAll(detectedPlayers);
 				for (EntityPlayer player : allDPlayers) {
 					if (Minecraft.getMinecraft().thePlayer == player) {
-						RabbitGui.proxy.display(new DecisionHud(entity, this));
+						RenderMod.proxy.openDecisionGui(entity, this);
 					}
 				}
 				detectedPlayers = players;
 			}
-		} 
-	}
-	
-	public void clearList(){
-		detectedPlayers.clear();
+		}
 	}
 
 	@Override
@@ -262,18 +284,5 @@ public class DecisionBlockTileEntity extends TileEntity {
 			compound.setTag("entity", entityTag);
 
 		}
-	}
-
-	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-		return (oldState.getBlock() != newSate.getBlock());
-	}
-	
-	public Map<String, Choice> getChoices() {
-		return choices;
-	}
-
-	public void setChoices(Map<String, Choice> choice) {
-		this.choices = choice;
 	}
 }
