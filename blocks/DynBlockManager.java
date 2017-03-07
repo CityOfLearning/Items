@@ -4,6 +4,8 @@ import com.dyn.DYNServerMod;
 import com.dyn.fixins.DynFixinsMod;
 import com.dyn.fixins.blocks.cmdblock.StudentCommandBlock;
 import com.dyn.fixins.blocks.cmdblock.StudentCommandBlockTileEntity;
+import com.dyn.fixins.blocks.decision.DecisionBlock;
+import com.dyn.fixins.blocks.decision.DecisionBlockTileEntity;
 import com.dyn.fixins.blocks.dialog.DialogBlock;
 import com.dyn.fixins.blocks.dialog.DialogBlockTileEntity;
 import com.dyn.fixins.blocks.dialog.StudentDialogBlock;
@@ -33,6 +35,7 @@ public class DynBlockManager {
 	public static Block dialogBlock;
 	public static Block proximityBlock;
 	public static Block timerBlock;
+	public static Block decisionBlock;
 
 	// public static Block arrowBlock;
 
@@ -59,6 +62,10 @@ public class DynBlockManager {
 		timerBlock = new TimerBlock().setUnlocalizedName("timer_block");
 		GameRegistry.registerBlock(timerBlock, "timer_block");
 		GameRegistry.registerTileEntity(TimerBlockTileEntity.class, "timer_block_te");
+		
+		decisionBlock = new DecisionBlock().setUnlocalizedName("decision_block");
+		GameRegistry.registerBlock(decisionBlock, "decision_block");
+		GameRegistry.registerTileEntity(DecisionBlockTileEntity.class, "decision_block_te");
 
 		studentProximityBlock = new StudentProximityBlock().setUnlocalizedName("student_proximity_block")
 				.setCreativeTab(dynTab);
@@ -75,7 +82,7 @@ public class DynBlockManager {
 			dialogBlock.setCreativeTab(dynTab);
 			proximityBlock.setCreativeTab(dynTab);
 			timerBlock.setCreativeTab(dynTab);
-
+			decisionBlock.setCreativeTab(dynTab);
 		}
 
 		if ((FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
@@ -104,6 +111,7 @@ public class DynBlockManager {
 		DynFixinsMod.proxy.registerBlockItem(dialogBlock);
 		DynFixinsMod.proxy.registerBlockItem(proximityBlock);
 		DynFixinsMod.proxy.registerBlockItem(timerBlock);
+		DynFixinsMod.proxy.registerBlockItem(decisionBlock);
 		// DynFixinsMod.proxy.registerBlockItem(arrowBlock);
 
 		// Student Items
