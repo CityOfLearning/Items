@@ -6,6 +6,8 @@ import java.util.Random;
 import com.dyn.DYNServerMod;
 import com.dyn.render.RenderMod;
 import com.dyn.utils.PlayerAccessLevel;
+import com.forgeessentials.commons.EnumMobType;
+import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -14,6 +16,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -133,6 +136,7 @@ public class ProximityBlock extends Block implements ITileEntityProvider {
 		if (tileentity instanceof ProximityBlockTileEntity) {
 			ProximityBlockTileEntity tileEntityData = (ProximityBlockTileEntity) tileentity;
 			tileEntityData.setCorners(10, 4, 10);
+			tileEntityData.setValidMob(EnumMobType.PLAYER);
 			worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
 		}
 	}
@@ -145,10 +149,17 @@ public class ProximityBlock extends Block implements ITileEntityProvider {
 			BlockPos c1 = ((ProximityBlockTileEntity) tileentity).getCorner1();
 			BlockPos c2 = ((ProximityBlockTileEntity) tileentity).getCorner2();
 			if ((c1 != null) && (c2 != null)) {
-				List<EntityPlayer> players = worldIn.getEntitiesWithinAABB(EntityPlayer.class,
+				List<EntityLivingBase> detectedEntities = worldIn.getEntitiesWithinAABB(EntityLivingBase.class,
 						AxisAlignedBB.fromBounds(pos.getX() - c1.getX(), pos.getY() - c1.getY(), pos.getZ() - c1.getZ(),
 								pos.getX() + c2.getX(), pos.getY() + c2.getY(), pos.getZ() + c2.getZ()));
-				((ProximityBlockTileEntity) tileentity).updateProximityList(players, state, worldIn, this);
+				
+				List<EntityLivingBase> validEntities = Lists.newArrayList();
+				for(EntityLivingBase entity : detectedEntities){
+					if(((ProximityBlockTileEntity) tileentity).isValidMobType(entity)){
+						validEntities.add(entity);
+					}
+				}				
+				((ProximityBlockTileEntity) tileentity).updateProximityList(validEntities, state, worldIn, this);
 				worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
 			}
 		}
