@@ -62,7 +62,7 @@ public class DynBlockManager {
 		timerBlock = new TimerBlock().setUnlocalizedName("timer_block");
 		GameRegistry.registerBlock(timerBlock, "timer_block");
 		GameRegistry.registerTileEntity(TimerBlockTileEntity.class, "timer_block_te");
-		
+
 		decisionBlock = new DecisionBlock().setUnlocalizedName("decision_block");
 		GameRegistry.registerBlock(decisionBlock, "decision_block");
 		GameRegistry.registerTileEntity(DecisionBlockTileEntity.class, "decision_block_te");

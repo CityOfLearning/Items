@@ -16,7 +16,6 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -152,13 +151,13 @@ public class ProximityBlock extends Block implements ITileEntityProvider {
 				List<EntityLivingBase> detectedEntities = worldIn.getEntitiesWithinAABB(EntityLivingBase.class,
 						AxisAlignedBB.fromBounds(pos.getX() - c1.getX(), pos.getY() - c1.getY(), pos.getZ() - c1.getZ(),
 								pos.getX() + c2.getX(), pos.getY() + c2.getY(), pos.getZ() + c2.getZ()));
-				
+
 				List<EntityLivingBase> validEntities = Lists.newArrayList();
-				for(EntityLivingBase entity : detectedEntities){
-					if(((ProximityBlockTileEntity) tileentity).isValidMobType(entity)){
+				for (EntityLivingBase entity : detectedEntities) {
+					if (((ProximityBlockTileEntity) tileentity).isValidMobType(entity)) {
 						validEntities.add(entity);
 					}
-				}				
+				}
 				((ProximityBlockTileEntity) tileentity).updateProximityList(validEntities, state, worldIn, this);
 				worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
 			}

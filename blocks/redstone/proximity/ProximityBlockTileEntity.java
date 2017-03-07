@@ -30,9 +30,9 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class ProximityBlockTileEntity extends TileEntity {
-	
+
 	private EnumMobType validMob;
-	
+
 	private BlockPos corner1;
 	private BlockPos corner2;
 
@@ -44,6 +44,17 @@ public class ProximityBlockTileEntity extends TileEntity {
 
 	public BlockPos getCorner2() {
 		return corner2;
+	}
+
+	@Override
+	public Packet getDescriptionPacket() {
+		NBTTagCompound tagCompound = new NBTTagCompound();
+		writeToNBT(tagCompound);
+		return new S35PacketUpdateTileEntity(pos, getBlockMetadata(), tagCompound);
+	}
+
+	public EnumMobType getValidMob() {
+		return validMob;
 	}
 
 	public boolean isValidMobType(EntityLivingBase entity) {
@@ -107,19 +118,12 @@ public class ProximityBlockTileEntity extends TileEntity {
 				return true;
 			}
 		case PLAYER:
-			if(entity instanceof EntityPlayer){
+			if (entity instanceof EntityPlayer) {
 				return true;
 			}
 		default:
 			return false;
 		}
-	}
-	
-	@Override
-	public Packet getDescriptionPacket() {
-		NBTTagCompound tagCompound = new NBTTagCompound();
-		writeToNBT(tagCompound);
-		return new S35PacketUpdateTileEntity(pos, getBlockMetadata(), tagCompound);
 	}
 
 	public void markForUpdate() {
@@ -143,14 +147,6 @@ public class ProximityBlockTileEntity extends TileEntity {
 		validMob = EnumMobType.fromName(compound.getString("mob_type"));
 	}
 
-	public EnumMobType getValidMob() {
-		return validMob;
-	}
-
-	public void setValidMob(EnumMobType validMob) {
-		this.validMob = validMob;
-	}
-
 	public void setCorners(BlockPos corner1, BlockPos corner2) {
 		this.corner1 = corner1;
 		this.corner2 = corner2;
@@ -162,6 +158,10 @@ public class ProximityBlockTileEntity extends TileEntity {
 
 	public void setCorners(int x1, int y1, int z1, int x2, int y2, int z2) {
 		setCorners(new BlockPos(x1, y1, z1), new BlockPos(x2, y2, z2));
+	}
+
+	public void setValidMob(EnumMobType validMob) {
+		this.validMob = validMob;
 	}
 
 	@Override
@@ -197,11 +197,11 @@ public class ProximityBlockTileEntity extends TileEntity {
 	@Override
 	public void writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		if(corner1 == null){
-			corner1 = new BlockPos(5,2,5);
+		if (corner1 == null) {
+			corner1 = new BlockPos(5, 2, 5);
 		}
-		if(corner2 == null){
-			corner2 = new BlockPos(5,2,5);
+		if (corner2 == null) {
+			corner2 = new BlockPos(5, 2, 5);
 		}
 		compound.setInteger("tileX1", corner1.getX());
 		compound.setInteger("tileY1", corner1.getY());
@@ -209,7 +209,7 @@ public class ProximityBlockTileEntity extends TileEntity {
 		compound.setInteger("tileX2", corner2.getX());
 		compound.setInteger("tileY2", corner2.getY());
 		compound.setInteger("tileZ2", corner2.getZ());
-		if(validMob == null){
+		if (validMob == null) {
 			validMob = EnumMobType.PLAYER;
 		}
 		compound.setString("mob_type", validMob.name());

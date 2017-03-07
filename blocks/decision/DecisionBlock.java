@@ -7,7 +7,6 @@ import java.util.Random;
 import com.dyn.DYNServerMod;
 import com.dyn.fixins.blocks.decision.DecisionBlockTileEntity.Choice;
 import com.dyn.render.RenderMod;
-import com.dyn.render.gui.decision.EditDecisionBlock;
 import com.dyn.utils.PlayerAccessLevel;
 import com.google.common.collect.Maps;
 import com.rabbit.gui.component.display.entity.DisplayEntityHead;
@@ -35,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class DecisionBlock extends Block implements ITileEntityProvider {
 
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
-	
+
 	public DecisionBlock() {
 		super(Material.circuits);
 		setDefaultState(blockState.getBaseState().withProperty(POWERED, Boolean.valueOf(false)));
@@ -66,7 +65,15 @@ public class DecisionBlock extends Block implements ITileEntityProvider {
 		return new BlockState(this, new IProperty[] { POWERED });
 	}
 
-	
+	/**
+	 * Returns a new instance of a block's tile entity class. Called on placing
+	 * the block.
+	 */
+	@Override
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		return new DecisionBlockTileEntity();
+	}
+
 	/**
 	 * Convert the BlockState into the correct metadata value
 	 */
@@ -85,7 +92,7 @@ public class DecisionBlock extends Block implements ITileEntityProvider {
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(POWERED, Boolean.valueOf((meta & 8) > 0));
 	}
-	
+
 	@Override
 	public int getStrongPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side) {
 		return state.getValue(POWERED).booleanValue() ? 15 : 0;
@@ -104,15 +111,6 @@ public class DecisionBlock extends Block implements ITileEntityProvider {
 		worldIn.notifyNeighborsOfStateChange(pos.west(), this);
 		worldIn.notifyNeighborsOfStateChange(pos.north(), this);
 		worldIn.notifyNeighborsOfStateChange(pos.south(), this);
-	}
-	
-	/**
-	 * Returns a new instance of a block's tile entity class. Called on placing
-	 * the block.
-	 */
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new DecisionBlockTileEntity();
 	}
 
 	@Override
@@ -148,7 +146,7 @@ public class DecisionBlock extends Block implements ITileEntityProvider {
 			choice.put("Choice B", Choice.NONE);
 			choice.put("Redstone", Choice.REDSTONE);
 			choice.put("Command", new Choice(2, "/say hello @p"));
-			tileEntityData.setChoices(choice );
+			tileEntityData.setChoices(choice);
 		}
 	}
 
