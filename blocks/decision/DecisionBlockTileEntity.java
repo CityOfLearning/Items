@@ -101,7 +101,7 @@ public class DecisionBlockTileEntity extends TileEntity {
 	private String text;
 
 	private Map<String, Choice> choices = Maps.newHashMap();
-	private List<EntityPlayer> detectedPlayers = Lists.newArrayList();
+	private List<EntityPlayer> prevDetectedPlayers = Lists.newArrayList();
 
 	// Entity Stuff
 	private int entityId;
@@ -110,7 +110,7 @@ public class DecisionBlockTileEntity extends TileEntity {
 	private String entityName = "";
 
 	public void clearList() {
-		detectedPlayers.clear();
+		prevDetectedPlayers.clear();
 	}
 
 	public Map<String, Choice> getChoices() {
@@ -161,6 +161,8 @@ public class DecisionBlockTileEntity extends TileEntity {
 				compound.getInteger("tileZ2"));
 		entitySkin = compound.getString("skin");
 
+		choices.clear();
+
 		NBTTagList nbttaglist = compound.getTagList("choices", 10);
 		for (int i = 0; i < nbttaglist.tagCount(); i++) {
 			NBTTagCompound choicetag = nbttaglist.getCompoundTagAt(i);
@@ -170,8 +172,8 @@ public class DecisionBlockTileEntity extends TileEntity {
 		if (compound.hasKey("entity")) {
 			entityId = compound.getInteger("entityId");
 			if (entityId == 90) {
-				entity = (EntityLiving) EntityList.createEntityByName(compound.getString("entityName"), worldObj);
 				entityName = compound.getString("entityName");
+				entity = (EntityLiving) EntityList.createEntityByName(entityName, worldObj);
 				if (entity == null) {
 					if (entityName.equals("DisplayHead")) {
 						entity = new DisplayEntityHead(worldObj);
@@ -188,6 +190,9 @@ public class DecisionBlockTileEntity extends TileEntity {
 			} else {
 				entity = (EntityLivingBase) EntityList.createEntityByID(entityId, worldObj);
 				entityName = compound.getString("entityName");
+				if (entity == null) {
+					entity = (EntityLivingBase) EntityList.createEntityByName(entityName, worldObj);
+				}
 			}
 			if ((entity != null) && compound.hasKey("entity")) {
 				try {
@@ -238,15 +243,15 @@ public class DecisionBlockTileEntity extends TileEntity {
 
 	public void updatePlayerList(List<EntityPlayer> players) {
 		if (players.size() > 0) {
-			if (players.size() != detectedPlayers.size()) {
+			if (players.size() != prevDetectedPlayers.size()) {
 				List<EntityPlayer> allDPlayers = players;
-				allDPlayers.removeAll(detectedPlayers);
+				allDPlayers.removeAll(prevDetectedPlayers);
 				for (EntityPlayer player : allDPlayers) {
 					if (Minecraft.getMinecraft().thePlayer == player) {
 						RenderMod.proxy.openDecisionGui(entity, this);
 					}
 				}
-				detectedPlayers = players;
+				prevDetectedPlayers.addAll(players);
 			}
 		}
 	}
