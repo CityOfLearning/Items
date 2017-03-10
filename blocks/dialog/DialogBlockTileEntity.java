@@ -30,7 +30,7 @@ public class DialogBlockTileEntity extends TileEntity {
 	private String text;
 	private boolean interupt = false;
 
-	private List<EntityPlayer> detectedPlayers = Lists.newArrayList();
+	private List<EntityPlayer> prevDetectedPlayers = Lists.newArrayList();
 
 	// Entity Stuff
 	private int entityId;
@@ -89,8 +89,8 @@ public class DialogBlockTileEntity extends TileEntity {
 		if (compound.hasKey("entity")) {
 			entityId = compound.getInteger("entityId");
 			if (entityId == 90) {
-				entity = (EntityLiving) EntityList.createEntityByName(compound.getString("entityName"), worldObj);
 				entityName = compound.getString("entityName");
+				entity = (EntityLiving) EntityList.createEntityByName(entityName, worldObj);
 				if (entity == null) {
 					if (entityName.equals("DisplayHead")) {
 						entity = new DisplayEntityHead(worldObj);
@@ -107,6 +107,9 @@ public class DialogBlockTileEntity extends TileEntity {
 			} else {
 				entity = (EntityLivingBase) EntityList.createEntityByID(entityId, worldObj);
 				entityName = compound.getString("entityName");
+				if (entity == null) {
+					entity = (EntityLivingBase) EntityList.createEntityByName(entityName, worldObj);
+				}
 			}
 			if ((entity != null) && compound.hasKey("entity")) {
 				try {
@@ -140,14 +143,7 @@ public class DialogBlockTileEntity extends TileEntity {
 				entityName = "DisplayHead";
 			} else if (entity instanceof DisplayEntity) {
 				entityName = "DisplayEntity";
-			} /*
-				 * else if (entityName.equals("Robot")) { entity = new
-				 * DynRobotEntity(worldObj); } else if
-				 * (entityName.equals("Dummy")) { entity = new
-				 * CrashTestEntity(worldObj); } else if
-				 * (entityName.equals("Ghost")) { entity = new
-				 * GhostEntity(worldObj); }
-				 */
+			}
 		}
 		entityId = id;
 		this.entity = entity;
@@ -159,18 +155,18 @@ public class DialogBlockTileEntity extends TileEntity {
 
 	public void updatePlayerList(List<EntityPlayer> players) {
 		if (players.size() > 0) {
-			if (players.size() != detectedPlayers.size()) {
+			if (players.size() != prevDetectedPlayers.size()) {
 				List<EntityPlayer> allDPlayers = players;
-				allDPlayers.removeAll(detectedPlayers);
+				allDPlayers.removeAll(prevDetectedPlayers);
 				for (EntityPlayer player : allDPlayers) {
 					if (Minecraft.getMinecraft().thePlayer == player) {
 						RenderMod.proxy.toggleDialogHud(getEntity(), true, getText(), 0, true);
 					}
 				}
-				detectedPlayers = players;
+				prevDetectedPlayers.addAll(players);
 			}
 		} else {
-			detectedPlayers.clear();
+			prevDetectedPlayers.clear();
 		}
 	}
 
