@@ -1,5 +1,9 @@
 package com.dyn.fixins.items;
 
+import com.dyn.DYNServerMod;
+import com.dyn.fixins.DynFixinsMod;
+import com.dyn.utils.PlayerAccessLevel;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -17,8 +21,6 @@ public class DynItemManager {
 	public static Item coinDiamond;
 	public static Item coinBronze;
 	public static Item coinEmerald;
-	public static Item moneyBag;
-	public static Item orb;
 	public static Item bronze_ingot;
 	public static Item demonic_ingot;
 	public static Item mithril_ingot;
@@ -26,6 +28,8 @@ public class DynItemManager {
 	public static Item key2;
 	public static Item old_coin;
 	public static Item crystal;
+	
+	public static Item schematic;
 
 	public static Item dynLogo;
 
@@ -35,38 +39,38 @@ public class DynItemManager {
 		final Item.ToolMaterial demonic = EnumHelper.addToolMaterial("DEMONIC", 3, 100, 8.0f, 6.0f, 22);
 		final Item.ToolMaterial frost = EnumHelper.addToolMaterial("FROST", 2, 59, 6.0f, 3.0f, 5);
 		final Item.ToolMaterial mithril = EnumHelper.addToolMaterial("MITHRIL", 3, 3000, 8.0f, 3.0f, 10);
-		DynItemManager.orb = new ItemOrb(26937).setUnlocalizedName("npcOrb");
-		new ItemOrb(26939).setUnlocalizedName("npcBrokenOrb");
 		final ItemArmor.ArmorMaterial armorMithril = EnumHelper.addArmorMaterial("MITHRIL", "", 40,
 				new int[] { 3, 8, 6, 3 }, 20);
 		EnumHelper.addArmorMaterial("BRONZE", "", 7, new int[] { 2, 6, 5, 2 }, 20);
 		EnumHelper.addArmorMaterial("EMERALD", "", 35, new int[] { 5, 7, 4, 5 }, 5);
-		DynItemManager.coinWood = new GenericItem(26717).setUnlocalizedName("npcCoinWooden");
-		DynItemManager.coinStone = new GenericItem(26718).setUnlocalizedName("npcCoinStone");
-		DynItemManager.coinBronze = new GenericItem(26719).setUnlocalizedName("npcCoinBronze");
-		DynItemManager.coinIron = new GenericItem(26720).setUnlocalizedName("npcCoinIron");
-		DynItemManager.coinGold = new GenericItem(26721).setUnlocalizedName("npcCoinGold");
-		DynItemManager.coinDiamond = new GenericItem(26722).setUnlocalizedName("npcCoinDiamond");
-		DynItemManager.coinEmerald = new GenericItem(26723).setUnlocalizedName("npcCoinEmerald");
-		DynItemManager.old_coin = new GenericItem().setUnlocalizedName("npcAncientCoin");
-		DynItemManager.crystal = new GenericItem(26954).setUnlocalizedName("npcCrystal");
+		DynFixinsMod.proxy.registerItem(coinWood = new GenericItem(), "npcCoinWooden");
+		DynFixinsMod.proxy.registerItem(coinStone = new GenericItem(), "npcCoinStone");
+		DynFixinsMod.proxy.registerItem(coinBronze = new GenericItem(), "npcCoinBronze");
+		DynFixinsMod.proxy.registerItem(coinIron = new GenericItem(), "npcCoinIron");
+		DynFixinsMod.proxy.registerItem(coinGold = new GenericItem(), "npcCoinGold");
+		DynFixinsMod.proxy.registerItem(coinDiamond = new GenericItem(), "npcCoinDiamond");
+		DynFixinsMod.proxy.registerItem(coinEmerald = new GenericItem(), "npcCoinEmerald");
+		DynFixinsMod.proxy.registerItem(old_coin = new GenericItem(), "npcAncientCoin");
+		DynFixinsMod.proxy.registerItem(crystal = new GenericItem(), "npcCrystal");
 
-		DynItemManager.dynLogo = new GenericItem().setUnlocalizedName("dyn_logo").setCreativeTab(null);
+		DynFixinsMod.proxy.registerItem(dynLogo = new GenericItem().setCreativeTab(null), "dyn_logo");
 
-		DynItemManager.key1 = new GenericItem(26964).setUnlocalizedName("npcKey");
-		DynItemManager.key2 = new GenericItem(26965).setUnlocalizedName("npcKey2");
-		final Item sapphire = new GenericItem(26970).setUnlocalizedName("npcSaphire")
+		DynFixinsMod.proxy.registerItem(key1 = new GenericItem(), "npcKey");
+		DynFixinsMod.proxy.registerItem(key2 = new GenericItem(), "npcKey2");
+		final Item sapphire = new GenericItem().setUnlocalizedName("npcSaphire")
 				.setCreativeTab(CreativeTabs.tabMaterials);
-		final Item amethyst = new GenericItem(26972).setUnlocalizedName("npcAmethyst")
+		final Item amethyst = new GenericItem().setUnlocalizedName("npcAmethyst")
 				.setCreativeTab(CreativeTabs.tabMaterials);
+		DynFixinsMod.proxy.registerItem(sapphire, "npcSaphire");
+		DynFixinsMod.proxy.registerItem(amethyst, "npcAmethyst");
 		OreDictionary.registerOre("gemSaphire", sapphire);
 		OreDictionary.registerOre("gemAmethyst", amethyst);
-		DynItemManager.bronze_ingot = new GenericItem(26973).setUnlocalizedName("npcBronzeIngot")
-				.setCreativeTab(CreativeTabs.tabMaterials);
-		DynItemManager.demonic_ingot = new GenericItem(26973).setUnlocalizedName("npcDemonicIngot")
-				.setCreativeTab(CreativeTabs.tabMaterials);
-		DynItemManager.mithril_ingot = new GenericItem(26973).setUnlocalizedName("npcMithrilIngot")
-				.setCreativeTab(CreativeTabs.tabMaterials);
+		DynFixinsMod.proxy.registerItem(bronze_ingot = new GenericItem().setCreativeTab(CreativeTabs.tabMaterials),
+				"npcBronzeIngot");
+		DynFixinsMod.proxy.registerItem(demonic_ingot = new GenericItem().setCreativeTab(CreativeTabs.tabMaterials),
+				"npcDemonicIngot");
+		DynFixinsMod.proxy.registerItem(mithril_ingot = new GenericItem().setCreativeTab(CreativeTabs.tabMaterials),
+				"npcMithrilIngot");
 		armorMithril.customCraftingMaterial = DynItemManager.mithril_ingot;
 		bronze.customCraftingMaterial = DynItemManager.bronze_ingot;
 		emerald.customCraftingMaterial = Items.emerald;
@@ -76,5 +80,11 @@ public class DynItemManager {
 		OreDictionary.registerOre("ingotBronze", DynItemManager.bronze_ingot);
 		OreDictionary.registerOre("ingotDemonic", DynItemManager.demonic_ingot);
 		OreDictionary.registerOre("ingotMithril", DynItemManager.mithril_ingot);
+
+		DynFixinsMod.proxy.registerItem(schematic = new ItemSchematic(), "schematic");
+
+		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerAccessLevel.STUDENT)) {
+			schematic.setCreativeTab(DynFixinsMod.dynTab);
+		}
 	}
 }

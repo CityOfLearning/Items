@@ -1,5 +1,8 @@
 package com.dyn.fixins.proxy;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.dyn.fixins.blocks.cmdblock.StudentCommandBlockLogic;
 import com.dyn.fixins.entity.crash.CrashTestEntity;
 import com.dyn.fixins.entity.crash.ModelCrashTestEntity;
@@ -14,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -45,6 +49,17 @@ public class Client implements Proxy {
 		ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation(Reference.MOD_ID + ":" + blockName,
 				"inventory");
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(blockItem, 0, itemModelResourceLocation);
+	}
+
+	@Override
+	public void registerItem(Item item, String name) {
+		GameRegistry.registerItem(item, name);
+		item.setUnlocalizedName(name);
+		List<ItemStack> list = new ArrayList<>();
+		item.getSubItems(item, null, list);
+		for (ItemStack stack : list) {
+			registerItem(item, name, stack.getItemDamage());
+		}
 	}
 
 	@Override

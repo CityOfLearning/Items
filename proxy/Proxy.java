@@ -14,6 +14,8 @@ public interface Proxy {
 
 	public void registerBlockItem(Block block);
 
+	public void registerItem(Item item, String name);
+
 	public void registerItem(Item item, String name, int meta);
 
 	public void renderGUI();

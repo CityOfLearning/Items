@@ -4,12 +4,12 @@ import com.dyn.fixins.blocks.cmdblock.StudentCommandBlockLogic;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Server implements Proxy {
 
 	@Override
 	public void init() {
-		// MinecraftForge.EVENT_BUS.register(this);
 
 	}
 
@@ -29,6 +29,12 @@ public class Server implements Proxy {
 	public void registerBlockItem(Block block) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void registerItem(Item item, String name) {
+		item.setUnlocalizedName(name);
+		GameRegistry.registerItem(item, name);
 	}
 
 	@Override
