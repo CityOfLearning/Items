@@ -15,11 +15,9 @@ import com.dyn.fixins.blocks.redstone.proximity.StudentProximityBlock;
 import com.dyn.fixins.blocks.redstone.timer.StudentTimerBlock;
 import com.dyn.fixins.blocks.redstone.timer.TimerBlock;
 import com.dyn.fixins.blocks.redstone.timer.TimerBlockTileEntity;
-import com.dyn.fixins.tab.DYNTab;
 import com.dyn.utils.PlayerAccessLevel;
 
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -39,11 +37,9 @@ public class DynBlockManager {
 
 	// public static Block arrowBlock;
 
-	public static CreativeTabs dynTab = new DYNTab();
-
 	public static void load() {
 		studentCmdBlock = (new StudentCommandBlock().setBlockUnbreakable().setResistance(6000000.0F)
-				.setUnlocalizedName("student_command_block")).setCreativeTab(dynTab);
+				.setUnlocalizedName("student_command_block")).setCreativeTab(DynFixinsMod.dynTab);
 		GameRegistry.registerBlock(studentCmdBlock, "student_command_block");
 		GameRegistry.registerTileEntity(StudentCommandBlockTileEntity.class, "student_command_block_te");
 
@@ -52,7 +48,7 @@ public class DynBlockManager {
 		GameRegistry.registerTileEntity(DialogBlockTileEntity.class, "dialog_block_te");
 
 		studentDialogBlock = (new StudentDialogBlock().setUnlocalizedName("student_dialog_block")
-				.setCreativeTab(dynTab));
+				.setCreativeTab(DynFixinsMod.dynTab));
 		GameRegistry.registerBlock(studentDialogBlock, "student_dialog_block");
 
 		proximityBlock = new ProximityBlock().setUnlocalizedName("proximity_block");
@@ -68,10 +64,11 @@ public class DynBlockManager {
 		GameRegistry.registerTileEntity(DecisionBlockTileEntity.class, "decision_block_te");
 
 		studentProximityBlock = new StudentProximityBlock().setUnlocalizedName("student_proximity_block")
-				.setCreativeTab(dynTab);
+				.setCreativeTab(DynFixinsMod.dynTab);
 		GameRegistry.registerBlock(studentProximityBlock, "student_proximity_block");
 
-		studentTimerBlock = new StudentTimerBlock().setUnlocalizedName("student_timer_block").setCreativeTab(dynTab);
+		studentTimerBlock = new StudentTimerBlock().setUnlocalizedName("student_timer_block")
+				.setCreativeTab(DynFixinsMod.dynTab);
 		GameRegistry.registerBlock(studentTimerBlock, "student_timer_block");
 
 		// arrowBlock = (new
@@ -79,10 +76,10 @@ public class DynBlockManager {
 		// GameRegistry.registerBlock(arrowBlock, "arrow_block");
 
 		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerAccessLevel.STUDENT)) {
-			dialogBlock.setCreativeTab(dynTab);
-			proximityBlock.setCreativeTab(dynTab);
-			timerBlock.setCreativeTab(dynTab);
-			decisionBlock.setCreativeTab(dynTab);
+			dialogBlock.setCreativeTab(DynFixinsMod.dynTab);
+			proximityBlock.setCreativeTab(DynFixinsMod.dynTab);
+			timerBlock.setCreativeTab(DynFixinsMod.dynTab);
+			decisionBlock.setCreativeTab(DynFixinsMod.dynTab);
 		}
 
 		if ((FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)

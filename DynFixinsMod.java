@@ -9,8 +9,10 @@ import com.dyn.fixins.items.DynItemManager;
 import com.dyn.fixins.proxy.Proxy;
 import com.dyn.fixins.reference.MetaData;
 import com.dyn.fixins.reference.Reference;
+import com.dyn.fixins.tab.DYNTab;
 import com.rabbit.gui.utils.ColourHelper;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -22,6 +24,8 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 public class DynFixinsMod {
 	@Mod.Instance(Reference.MOD_ID)
 	public static DynFixinsMod instance;
+
+	public static CreativeTabs dynTab = new DYNTab();
 
 	@SidedProxy(modId = Reference.MOD_ID, clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
 	public static Proxy proxy;
