@@ -2,6 +2,7 @@ package com.dyn.fixins.items;
 
 import com.dyn.DYNServerMod;
 import com.dyn.fixins.DynFixinsMod;
+import com.dyn.fixins.blocks.DynBlockManager;
 import com.dyn.utils.PlayerAccessLevel;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -9,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemReed;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -30,6 +32,8 @@ public class DynItemManager {
 	public static Item crystal;
 	
 	public static Item schematic;
+	public static Item achMedal;
+	public static Item delayBlockItem;
 
 	public static Item dynLogo;
 
@@ -82,9 +86,13 @@ public class DynItemManager {
 		OreDictionary.registerOre("ingotMithril", DynItemManager.mithril_ingot);
 
 		DynFixinsMod.proxy.registerItem(schematic = new ItemSchematic(), "schematic");
+		DynFixinsMod.proxy.registerItem(achMedal = new ItemAchievementMedal(), "ach_medal");
+		
+		DynFixinsMod.proxy.registerItem(delayBlockItem = new ItemReed(DynBlockManager.delayBlockOff).setCreativeTab(DynFixinsMod.dynTab), "delay_diode");
 
 		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerAccessLevel.STUDENT)) {
 			schematic.setCreativeTab(DynFixinsMod.dynTab);
+			achMedal.setCreativeTab(DynFixinsMod.dynTab);
 		}
 	}
 }
