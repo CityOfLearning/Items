@@ -53,8 +53,9 @@ public class DynFixinsMod {
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		MetaData.init(event.getModMetadata());
-		DynItemManager.load();
+		
 		DynBlockManager.load();
+		DynItemManager.load();
 
 		registerNewEntity(CrashTestEntity.class, "dynCrashTestEntity", 1, ColourHelper.AWTColor2RGBInt(Color.BLACK),
 				ColourHelper.AWTColor2RGBInt(Color.YELLOW));

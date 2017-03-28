@@ -9,6 +9,7 @@ import com.dyn.fixins.blocks.decision.DecisionBlockTileEntity;
 import com.dyn.fixins.blocks.dialog.DialogBlock;
 import com.dyn.fixins.blocks.dialog.DialogBlockTileEntity;
 import com.dyn.fixins.blocks.dialog.StudentDialogBlock;
+import com.dyn.fixins.blocks.redstone.delay.DelaySignalBlock;
 import com.dyn.fixins.blocks.redstone.proximity.ProximityBlock;
 import com.dyn.fixins.blocks.redstone.proximity.ProximityBlockTileEntity;
 import com.dyn.fixins.blocks.redstone.proximity.StudentProximityBlock;
@@ -34,6 +35,9 @@ public class DynBlockManager {
 	public static Block proximityBlock;
 	public static Block timerBlock;
 	public static Block decisionBlock;
+	
+	public static Block delayBlock;
+	public static Block delayBlockOff;
 
 	// public static Block arrowBlock;
 
@@ -74,6 +78,12 @@ public class DynBlockManager {
 		// arrowBlock = (new
 		// BlockArrowSign().setUnlocalizedName("arrow_block")).setCreativeTab(dynTab);
 		// GameRegistry.registerBlock(arrowBlock, "arrow_block");
+		
+		delayBlock = new DelaySignalBlock(true).setUnlocalizedName("delay_block").setHardness(0.0F).setStepSound(Block.soundTypeWood);
+		GameRegistry.registerBlock(delayBlock, "delay_block");
+		
+		delayBlockOff = new DelaySignalBlock(false).setUnlocalizedName("delay_block_off").setHardness(0.0F).setStepSound(Block.soundTypeWood);
+		GameRegistry.registerBlock(delayBlockOff, "delay_block_off");
 
 		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerAccessLevel.STUDENT)) {
 			dialogBlock.setCreativeTab(DynFixinsMod.dynTab);
