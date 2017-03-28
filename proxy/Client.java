@@ -58,7 +58,7 @@ public class Client implements Proxy {
 		List<ItemStack> list = new ArrayList<>();
 		item.getSubItems(item, null, list);
 		for (ItemStack stack : list) {
-			registerItem(item, name, stack.getItemDamage());
+			registerItem(item, item.getUnlocalizedName(stack), stack.getItemDamage());
 		}
 	}
 
