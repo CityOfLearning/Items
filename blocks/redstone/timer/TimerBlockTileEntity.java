@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 public class TimerBlockTileEntity extends TileEntity {
 
-	private int time;
+	private int time = 20;
 
 	@Override
 	public Packet getDescriptionPacket() {

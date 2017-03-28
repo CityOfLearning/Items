@@ -96,9 +96,9 @@ public class DecisionBlockTileEntity extends TileEntity {
 		}
 	}
 
-	private BlockPos corner1;
-	private BlockPos corner2;
-	private String text;
+	private BlockPos corner1 = BlockPos.ORIGIN;
+	private BlockPos corner2 = BlockPos.ORIGIN;
+	private String text = "placeholder";
 
 	private Map<String, Choice> choices = Maps.newHashMap();
 	private List<EntityPlayer> prevDetectedPlayers = Lists.newArrayList();

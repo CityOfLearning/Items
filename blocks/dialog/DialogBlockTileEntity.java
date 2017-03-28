@@ -25,9 +25,9 @@ import net.minecraft.util.BlockPos;
 
 public class DialogBlockTileEntity extends TileEntity {
 
-	private BlockPos corner1;
-	private BlockPos corner2;
-	private String text;
+	private BlockPos corner1 = BlockPos.ORIGIN;
+	private BlockPos corner2 = BlockPos.ORIGIN;
+	private String text = "placeholder";
 	private boolean interupt = false;
 
 	private List<EntityPlayer> prevDetectedPlayers = Lists.newArrayList();
