@@ -145,11 +145,15 @@ public class DecisionBlock extends Block implements ITileEntityProvider {
 			choice.put("Choice A", Choice.NONE);
 			choice.put("Choice B", Choice.NONE);
 			choice.put("Redstone", Choice.REDSTONE);
-			choice.put("Command", new Choice(2, "/say hello @p"));
+			choice.put("Command", new Choice(2, "/say hello @p", true));
 			tileEntityData.setChoices(choice);
+			tileEntityData.setActive(false);
+			tileEntityData.setIsQuiz(false);
 		}
 	}
 
+	// we dont need to update a list since its specific to each client
+	// anyways...
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
@@ -163,8 +167,11 @@ public class DecisionBlock extends Block implements ITileEntityProvider {
 							AxisAlignedBB.fromBounds(pos.getX() - c1.getX(), pos.getY() - c1.getY(),
 									pos.getZ() - c1.getZ(), pos.getX() + c2.getX(), pos.getY() + c2.getY(),
 									pos.getZ() + c2.getZ()));
-
-					((DecisionBlockTileEntity) tileentity).updatePlayerList(players);
+					for (EntityPlayer player : players) {
+						if (Minecraft.getMinecraft().thePlayer == player) {
+							((DecisionBlockTileEntity) tileentity).updatePlayerStatus();
+						}
+					}
 				}
 			}
 		}

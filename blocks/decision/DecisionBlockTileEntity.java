@@ -1,6 +1,5 @@
 package com.dyn.fixins.blocks.decision;
 
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -9,17 +8,14 @@ import com.dyn.fixins.entity.crash.CrashTestEntity;
 import com.dyn.fixins.entity.ghost.GhostEntity;
 import com.dyn.render.RenderMod;
 import com.dyn.robot.entity.DynRobotEntity;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.rabbit.gui.component.display.entity.DisplayEntity;
 import com.rabbit.gui.component.display.entity.DisplayEntityHead;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
@@ -33,25 +29,40 @@ public class DecisionBlockTileEntity extends TileEntity {
 
 	public static class Choice {
 
-		public static final Choice NONE = new Choice(0, "none");
-		public static final Choice REDSTONE = new Choice(1, "none");
+		public static final Choice NONE = new Choice(0, "none", false);
+		public static final Choice REDSTONE = new Choice(1, "none", false);
+
+		private static Pattern p3 = Pattern.compile("\u204A", Pattern.LITERAL);
 
 		public static Choice parse(String toParse) {
-			if (toParse.contains("redstone")) {
-				return REDSTONE;
-			} else if (toParse.contains("cmd")) {
-				return new Choice(2, toParse.split(Pattern.quote("|"))[1]);
+			boolean correct = false;
+			if (p3.split(toParse).length > 1) {
+				correct = p3.split(toParse)[1].equals("t") ? true : false;
 			}
-			return NONE;
+			toParse = p3.split(toParse)[0];
+			if (toParse.contains("redstone")) {
+				return new Choice(REDSTONE).setCorrect(correct);
+			} else if (toParse.contains("cmd")) {
+				return new Choice(2, toParse.split(Pattern.quote("|"))[1], correct);
+			}
+			return new Choice(NONE).setCorrect(correct);
 		}
 
 		private String value;
-
 		private int id;
+		// only relevant if its a quiz
+		private boolean isCorrect;
 
-		public Choice(int id, String value) {
+		private Choice(Choice copy) {
+			id = copy.getId();
+			value = copy.getValue();
+			isCorrect = copy.isCorrect();
+		}
+
+		public Choice(int id, String value, boolean isCorrect) {
 			this.id = id;
 			this.value = value;
+			this.isCorrect = isCorrect;
 		}
 
 		@Override
@@ -80,18 +91,28 @@ public class DecisionBlockTileEntity extends TileEntity {
 			return value;
 		}
 
-		public void setValue(String val) {
+		public boolean isCorrect() {
+			return isCorrect;
+		}
+
+		public Choice setCorrect(boolean isCorrect) {
+			this.isCorrect = isCorrect;
+			return this;
+		}
+
+		public Choice setValue(String val) {
 			value = val;
+			return this;
 		}
 
 		@Override
 		public String toString() {
 			if (id == 0) {
-				return "none";
+				return "none" + p3.pattern() + (isCorrect() ? "t" : "f");
 			} else if (id == 1) {
-				return "redstone";
+				return "redstone" + p3.pattern() + (isCorrect() ? "t" : "f");
 			} else {
-				return "cmd|" + value;
+				return "cmd|" + value + p3.pattern() + (isCorrect() ? "t" : "f");
 			}
 		}
 	}
@@ -99,19 +120,19 @@ public class DecisionBlockTileEntity extends TileEntity {
 	private BlockPos corner1 = BlockPos.ORIGIN;
 	private BlockPos corner2 = BlockPos.ORIGIN;
 	private String text = "placeholder";
+	private boolean isQuiz = false;
+	private boolean isActive = true;
 
 	private Map<String, Choice> choices = Maps.newHashMap();
-	private List<EntityPlayer> prevDetectedPlayers = Lists.newArrayList();
 
 	// Entity Stuff
 	private int entityId;
-	private String entitySkin = "";
-	private EntityLivingBase entity;
-	private String entityName = "";
 
-	public void clearList() {
-		prevDetectedPlayers.clear();
-	}
+	private String entitySkin = "";
+
+	private EntityLivingBase entity;
+
+	private String entityName = "";
 
 	public Map<String, Choice> getChoices() {
 		return choices;
@@ -140,6 +161,14 @@ public class DecisionBlockTileEntity extends TileEntity {
 		return text;
 	}
 
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public boolean isQuiz() {
+		return isQuiz;
+	}
+
 	public void markForUpdate() {
 		worldObj.markBlockForUpdate(pos);
 		markDirty();
@@ -160,6 +189,8 @@ public class DecisionBlockTileEntity extends TileEntity {
 		corner2 = new BlockPos(compound.getInteger("tileX2"), compound.getInteger("tileY2"),
 				compound.getInteger("tileZ2"));
 		entitySkin = compound.getString("skin");
+
+		isQuiz = compound.getBoolean("quiz");
 
 		choices.clear();
 
@@ -205,6 +236,10 @@ public class DecisionBlockTileEntity extends TileEntity {
 		}
 	}
 
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
 	public void setChoices(Map<String, Choice> choice) {
 		choices = choice;
 	}
@@ -236,23 +271,24 @@ public class DecisionBlockTileEntity extends TileEntity {
 		this.entity = entity;
 	}
 
+	public void setIsQuiz(boolean isQuiz) {
+		this.isQuiz = isQuiz;
+	}
+
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
 		return (oldState.getBlock() != newSate.getBlock());
 	}
 
-	public void updatePlayerList(List<EntityPlayer> players) {
-		if (players.size() > 0) {
-			if (players.size() != prevDetectedPlayers.size()) {
-				List<EntityPlayer> allDPlayers = players;
-				allDPlayers.removeAll(prevDetectedPlayers);
-				for (EntityPlayer player : allDPlayers) {
-					if (Minecraft.getMinecraft().thePlayer == player) {
-						RenderMod.proxy.openDecisionGui(entity, this);
-					}
-				}
-				prevDetectedPlayers.addAll(players);
+	public void updatePlayerStatus() {
+		if (isQuiz) {
+			if (isActive) {
+				RenderMod.proxy.openDecisionGui(entity, this);
+				isActive = false;
 			}
+		} else if (isActive) {
+			RenderMod.proxy.openDecisionGui(entity, this);
+			isActive = false;
 		}
 	}
 
@@ -267,6 +303,7 @@ public class DecisionBlockTileEntity extends TileEntity {
 		compound.setInteger("tileY2", corner2.getY());
 		compound.setInteger("tileZ2", corner2.getZ());
 		compound.setString("skin", entitySkin);
+		compound.setBoolean("quiz", isQuiz);
 
 		NBTTagList nbttaglist = new NBTTagList();
 		for (String choice : choices.keySet()) {
