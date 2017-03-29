@@ -30,7 +30,7 @@ public class DynItemManager {
 	public static Item key2;
 	public static Item old_coin;
 	public static Item crystal;
-	
+
 	public static Item schematic;
 	public static Item achMedal;
 	public static Item delayBlockItem;
@@ -87,8 +87,10 @@ public class DynItemManager {
 
 		DynFixinsMod.proxy.registerItem(schematic = new ItemSchematic(), "schematic");
 		DynFixinsMod.proxy.registerItem(achMedal = new ItemAchievementMedal(), "ach_medal");
-		
-		DynFixinsMod.proxy.registerItem(delayBlockItem = new ItemReed(DynBlockManager.delayBlockOff).setCreativeTab(DynFixinsMod.dynTab), "delay_diode");
+
+		DynFixinsMod.proxy.registerItem(
+				delayBlockItem = new ItemReed(DynBlockManager.delayBlockOff).setCreativeTab(DynFixinsMod.dynTab),
+				"delay_diode");
 
 		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerAccessLevel.STUDENT)) {
 			schematic.setCreativeTab(DynFixinsMod.dynTab);

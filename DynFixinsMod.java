@@ -53,7 +53,7 @@ public class DynFixinsMod {
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		MetaData.init(event.getModMetadata());
-		
+
 		DynBlockManager.load();
 		DynItemManager.load();
 
