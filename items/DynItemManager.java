@@ -36,6 +36,7 @@ public class DynItemManager {
 	public static Item delayBlockItem;
 
 	public static Item dynLogo;
+	public static Item latchBlockItem;
 
 	public static void load() {
 		final Item.ToolMaterial bronze = EnumHelper.addToolMaterial("BRONZE", 2, 170, 5.0f, 2.0f, 15);
@@ -91,6 +92,10 @@ public class DynItemManager {
 		DynFixinsMod.proxy.registerItem(
 				delayBlockItem = new ItemReed(DynBlockManager.delayBlockOff).setCreativeTab(DynFixinsMod.dynTab),
 				"delay_diode");
+
+		DynFixinsMod.proxy.registerItem(
+				latchBlockItem = new ItemReed(DynBlockManager.latchBLock).setCreativeTab(DynFixinsMod.dynTab),
+				"latch_diode");
 
 		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerAccessLevel.STUDENT)) {
 			schematic.setCreativeTab(DynFixinsMod.dynTab);
