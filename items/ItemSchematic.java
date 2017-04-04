@@ -25,7 +25,20 @@ import noppes.npcs.controllers.SchematicController;
 public class ItemSchematic extends Item {
 	private static final Map<Integer, String> SCHEMS = Maps.<Integer, String>newHashMap();
 
+	private static void createMappings() {
+		int counter = 0;
+		for (String schem : SchematicController.instance.list()) {
+			SCHEMS.put(counter++, schem);
+		}
+		for (String schem : SchematicRegistry.enumerateSchematics()) {
+			SCHEMS.put(counter++, schem);
+		}
+	}
+
 	public static Schematic getSchematic(ItemStack itemStackIn) {
+		if (SCHEMS.size() == 0) {
+			createMappings();
+		}
 		if (SchematicController.instance.included.contains(SCHEMS.get(itemStackIn.getItemDamage()))) {
 			return SchematicController.instance.load(SCHEMS.get(itemStackIn.getItemDamage()));
 		} else {
