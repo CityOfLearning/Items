@@ -190,6 +190,9 @@ public class DelaySignalBlock extends BlockRedstoneDiode {
 			worldIn.setBlockState(pos, getUnpoweredState(state), 2);
 		} else if (!isRepeaterPowered) {
 			worldIn.setBlockState(pos, getPoweredState(state), 2);
+			if (!flag) {
+				worldIn.updateBlockTick(pos, this, getDelay(state), -1);
+			}
 		}
 	}
 }
