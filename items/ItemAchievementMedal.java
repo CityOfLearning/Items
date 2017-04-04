@@ -62,14 +62,12 @@ public class ItemAchievementMedal extends Item {
 					// its possible that a node can be special and not a leaf
 					NAME_MAP.put(((AchievementPlus) node.data).getName(), counter);
 					ACHIEVEMENTS.put(counter++,
-							new ImmutablePair<>(
-									node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4),
+							new ImmutablePair<>(node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4),
 									((AchievementPlus) node.data).getName()));
 				} else {
 					NAME_MAP.put(node.data.getStatName().getUnformattedText(), counter);
 					ACHIEVEMENTS.put(counter++,
-							new ImmutablePair<>(
-									node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4),
+							new ImmutablePair<>(node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4),
 									node.data.getStatName().getUnformattedText()));
 				}
 			}
@@ -152,14 +150,12 @@ public class ItemAchievementMedal extends Item {
 					// its possible that a node can be special and not a leaf
 					NAME_MAP.put(((AchievementPlus) node.data).getName(), counter);
 					ACHIEVEMENTS.put(counter++,
-							new ImmutablePair<>(
-									node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4),
+							new ImmutablePair<>(node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4),
 									((AchievementPlus) node.data).getName()));
 				} else {
 					NAME_MAP.put(node.data.getStatName().getUnformattedText(), counter);
 					ACHIEVEMENTS.put(counter++,
-							new ImmutablePair<>(
-									node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4),
+							new ImmutablePair<>(node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4),
 									node.data.getStatName().getUnformattedText()));
 				}
 			}
