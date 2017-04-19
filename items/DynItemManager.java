@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemReed;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class DynItemManager {
@@ -37,6 +38,7 @@ public class DynItemManager {
 
 	public static Item dynLogo;
 	public static Item latchBlockItem;
+	public static Item manual;
 
 	public static void load() {
 		final Item.ToolMaterial bronze = EnumHelper.addToolMaterial("BRONZE", 2, 170, 5.0f, 2.0f, 15);
@@ -97,9 +99,14 @@ public class DynItemManager {
 				latchBlockItem = new ItemReed(DynBlockManager.latchBLock).setCreativeTab(DynFixinsMod.dynTab),
 				"latch_diode");
 
+		manual = new ItemReferenceManual().setUnlocalizedName("dyn_robot_manual");
+		GameRegistry.registerItem(manual, "dyn_robot_manual");
+		DynFixinsMod.proxy.registerItem(manual, manual.getUnlocalizedName(), 0);
+
 		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerAccessLevel.STUDENT)) {
 			schematic.setCreativeTab(DynFixinsMod.dynTab);
 			achMedal.setCreativeTab(DynFixinsMod.dynTab);
+			manual.setCreativeTab(DynFixinsMod.dynTab);
 		}
 	}
 }
