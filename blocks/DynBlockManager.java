@@ -11,6 +11,7 @@ import com.dyn.fixins.blocks.dialog.DialogBlockTileEntity;
 import com.dyn.fixins.blocks.dialog.StudentDialogBlock;
 import com.dyn.fixins.blocks.redstone.delay.DelaySignalBlock;
 import com.dyn.fixins.blocks.redstone.latch.RedstoneLatchBlock;
+import com.dyn.fixins.blocks.redstone.light.RedstoneIndicationLight;
 import com.dyn.fixins.blocks.redstone.proximity.ProximityBlock;
 import com.dyn.fixins.blocks.redstone.proximity.ProximityBlockTileEntity;
 import com.dyn.fixins.blocks.redstone.proximity.StudentProximityBlock;
@@ -41,6 +42,9 @@ public class DynBlockManager {
 	public static Block delayBlockOff;
 
 	public static Block latchBLock;
+
+	public static Block indcationLightOn;
+	public static Block indcationLightOff;
 
 	// public static Block arrowBlock;
 
@@ -94,6 +98,13 @@ public class DynBlockManager {
 				.setStepSound(Block.soundTypeWood);
 		GameRegistry.registerBlock(latchBLock, "rs_latch");
 
+		indcationLightOn = new RedstoneIndicationLight(true).setUnlocalizedName("indication_lamp_on")
+				.setCreativeTab(DynFixinsMod.dynTab);
+		GameRegistry.registerBlock(indcationLightOn, "indication_lamp_on");
+
+		indcationLightOff = new RedstoneIndicationLight(false).setUnlocalizedName("indication_lamp_off");
+		GameRegistry.registerBlock(indcationLightOff, "indication_lamp_off");
+
 		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerAccessLevel.STUDENT)) {
 			dialogBlock.setCreativeTab(DynFixinsMod.dynTab);
 			proximityBlock.setCreativeTab(DynFixinsMod.dynTab);
@@ -129,6 +140,8 @@ public class DynBlockManager {
 		DynFixinsMod.proxy.registerBlockItem(timerBlock);
 		DynFixinsMod.proxy.registerBlockItem(decisionBlock);
 		// DynFixinsMod.proxy.registerBlockItem(arrowBlock);
+		DynFixinsMod.proxy.registerBlockItem(indcationLightOn);
+		DynFixinsMod.proxy.registerBlockItem(indcationLightOff);
 
 		// Student Items
 		DynFixinsMod.proxy.registerBlockItem(studentCmdBlock);
