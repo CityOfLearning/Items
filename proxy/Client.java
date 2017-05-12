@@ -58,12 +58,12 @@ public class Client implements Proxy {
 		List<ItemStack> list = new ArrayList<>();
 		item.getSubItems(item, null, list);
 		for (ItemStack stack : list) {
-			registerItem(item, item.getUnlocalizedName(stack), stack.getItemDamage());
+			registerItemModels(item, item.getUnlocalizedName(stack), stack.getItemDamage());
 		}
 	}
 
 	@Override
-	public void registerItem(Item item, String name, int meta) {
+	public void registerItemModels(Item item, String name, int meta) {
 		if (name.contains("item.")) {
 			name = name.replace("item.", "");
 		}

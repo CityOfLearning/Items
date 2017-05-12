@@ -16,7 +16,7 @@ public interface Proxy {
 
 	public void registerItem(Item item, String name);
 
-	public void registerItem(Item item, String name, int meta);
+	public void registerItemModels(Item item, String name, int meta);
 
 	public void renderGUI();
 }

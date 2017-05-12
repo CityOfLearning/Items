@@ -90,6 +90,10 @@ public class DynItemManager {
 
 		DynFixinsMod.proxy.registerItem(schematic = new ItemSchematic(), "schematic");
 		DynFixinsMod.proxy.registerItem(achMedal = new ItemAchievementMedal(), "ach_medal");
+		// DynFixinsMod.proxy.registerItemModels(achMedal, "ach_medal", 1);
+		// DynFixinsMod.proxy.registerItemModels(achMedal, "ach_medal", 2);
+		// DynFixinsMod.proxy.registerItemModels(achMedal, "ach_medal", 3);
+		// DynFixinsMod.proxy.registerItemModels(achMedal, "ach_medal", 4);
 
 		DynFixinsMod.proxy.registerItem(
 				delayBlockItem = new ItemReed(DynBlockManager.delayBlockOff).setCreativeTab(DynFixinsMod.dynTab),
@@ -101,7 +105,7 @@ public class DynItemManager {
 
 		manual = new ItemReferenceManual().setUnlocalizedName("dyn_robot_manual");
 		GameRegistry.registerItem(manual, "dyn_robot_manual");
-		DynFixinsMod.proxy.registerItem(manual, manual.getUnlocalizedName(), 0);
+		DynFixinsMod.proxy.registerItemModels(manual, manual.getUnlocalizedName(), 0);
 
 		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerAccessLevel.STUDENT)) {
 			schematic.setCreativeTab(DynFixinsMod.dynTab);
