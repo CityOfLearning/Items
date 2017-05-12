@@ -85,7 +85,7 @@ public class RedstoneLatchBlock extends BlockDirectional {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World worldIn, BlockPos pos) {
-		return DynItemManager.delayBlockItem;
+		return DynItemManager.latchBlockItem;
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class RedstoneLatchBlock extends BlockDirectional {
 	 */
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return DynItemManager.delayBlockItem;
+		return DynItemManager.latchBlockItem;
 	}
 
 	/**
