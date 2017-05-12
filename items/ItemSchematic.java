@@ -1,49 +1,35 @@
 package com.dyn.fixins.items;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import com.dyn.schematics.Schematic;
 import com.dyn.schematics.SchematicRegistry;
 import com.dyn.schematics.SchematicRenderingRegistry;
-import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import noppes.npcs.controllers.SchematicController;
+//import noppes.npcs.controllers.SchematicController;
 
 public class ItemSchematic extends Item {
-	private static final Map<Integer, String> SCHEMS = Maps.<Integer, String>newHashMap();
 
-	private static void createMappings() {
-		int counter = 0;
-		for (String schem : SchematicController.instance.list()) {
-			SCHEMS.put(counter++, schem);
+	public static Schematic getSchematic(ItemStack stack) {
+		if (stack.hasTagCompound()) {
+			NBTTagCompound nbttagcompound = stack.getTagCompound();
+			String schemName = nbttagcompound.getString("title");
+			return new Schematic(schemName, nbttagcompound);
 		}
-		for (String schem : SchematicRegistry.enumerateSchematics()) {
-			SCHEMS.put(counter++, schem);
-		}
-	}
-
-	public static Schematic getSchematic(ItemStack itemStackIn) {
-		if (SCHEMS.size() == 0) {
-			createMappings();
-		}
-		if (SchematicController.instance.included.contains(SCHEMS.get(itemStackIn.getItemDamage()))) {
-			return SchematicController.instance.load(SCHEMS.get(itemStackIn.getItemDamage()));
-		} else {
-			return SchematicRegistry.load(SCHEMS.get(itemStackIn.getItemDamage()));
-		}
+		return null;
 	}
 
 	public ItemSchematic() {
@@ -58,23 +44,16 @@ public class ItemSchematic extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-		tooltip.add(EnumChatFormatting.DARK_AQUA + SCHEMS.get(stack.getItemDamage()));
-		tooltip.add("");
-		int counter = 0;
-		if (SchematicController.instance.included.contains(SCHEMS.get(stack.getItemDamage()))) {
-			for (Entry<Block, Integer> block : SchematicController.instance.load(SCHEMS.get(stack.getItemDamage()))
-					.getMaterialCosts().entrySet()) {
-				if (counter > 5) {
-					tooltip.add("Etc...");
-					break;
-				}
-				tooltip.add(EnumChatFormatting.GOLD + block.getKey().getLocalizedName() + EnumChatFormatting.RESET
-						+ ": " + EnumChatFormatting.GRAY + block.getValue());
-				counter++;
-			}
-		} else {
-			for (Entry<Block, Integer> block : SchematicRegistry.load(SCHEMS.get(stack.getItemDamage()))
-					.getMaterialCosts().entrySet()) {
+		if (stack.hasTagCompound()) {
+			NBTTagCompound nbttagcompound = stack.getTagCompound();
+
+			String schemName = nbttagcompound.getString("title");
+			tooltip.add(EnumChatFormatting.DARK_AQUA + schemName);
+			tooltip.add("");
+			int counter = 0;
+
+			Schematic schem = new Schematic(schemName, nbttagcompound);
+			for (Entry<Block, Integer> block : schem.getMaterialCosts().entrySet()) {
 				if (counter > 5) {
 					tooltip.add("Etc...");
 					break;
@@ -93,28 +72,35 @@ public class ItemSchematic extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-		int counter = 0;
-		for (String schem : SchematicController.instance.list()) {
-			subItems.add(new ItemStack(itemIn, 1, counter));
-			SCHEMS.put(counter++, schem);
+		subItems.add(new ItemStack(itemIn, 1, 0));
+		// for (String schemName : SchematicController.instance.list()) {
+		// Schematic schem = SchematicController.instance.load(schemName);
+		// if (schem.size < 100000) {
+		// NBTTagCompound compound = new NBTTagCompound();
+		// schem.writeToNBT(compound);
+		// compound.setString("title", schemName);
+		//
+		// ItemStack is = new ItemStack(itemIn);
+		// is.setTagCompound(compound);
+		//
+		// subItems.add(is);
+		//
+		// }
+		// }
+		for (String schemName : SchematicRegistry.enumerateSchematics()) {
+			Schematic schem = SchematicRegistry.load(schemName);
+			if (schem.size < 100000) {
+				NBTTagCompound compound = new NBTTagCompound();
+				schem.writeToNBT(compound);
+				compound.setString("title", schemName);
+
+				ItemStack is = new ItemStack(itemIn);
+				is.setTagCompound(compound);
+
+				subItems.add(is);
+
+			}
 		}
-		for (String schem : SchematicRegistry.enumerateSchematics()) {
-			subItems.add(new ItemStack(itemIn, 1, counter));
-			SCHEMS.put(counter++, schem);
-		}
-		// File otherDir = new File(CustomNpcs.Dir.getParent(),
-		// "config/worldedit/schematics");
-		// if (otherDir.exists()) {
-		// for (File schem : otherDir.listFiles(new FilenameFilter() {
-		// @Override
-		// public boolean accept(File dir, String name) {
-		// return name.endsWith("schematic");
-		// }
-		// })) {
-		// subItems.add(new ItemStack(itemIn, 1, counter));
-		// SCHEMS.put(counter++, schem.getName().replace(".schematic", ""));
-		// }
-		// }
 	}
 
 	/**
@@ -124,13 +110,8 @@ public class ItemSchematic extends Item {
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
 		if (worldIn.isRemote) {
-			if (SchematicController.instance.included.contains(SCHEMS.get(itemStackIn.getItemDamage()))) {
-				SchematicRenderingRegistry
-						.removeSchematic(SchematicController.instance.load(SCHEMS.get(itemStackIn.getItemDamage())));
-			} else {
-				SchematicRenderingRegistry
-						.removeSchematic(SchematicRegistry.load(SCHEMS.get(itemStackIn.getItemDamage())));
-			}
+			SchematicRenderingRegistry
+					.removeSchematic(new Schematic(itemStackIn.getDisplayName(), itemStackIn.getTagCompound()));
 		}
 		return itemStackIn;
 	}
@@ -143,30 +124,15 @@ public class ItemSchematic extends Item {
 			float hitX, float hitY, float hitZ) {
 
 		if (worldIn.isRemote) {
-			if (SchematicController.instance.included.contains(SCHEMS.get(stack.getItemDamage()))) {
-				Schematic schem = SchematicController.instance.load(SCHEMS.get(stack.getItemDamage()));
-				if (schem != null) {
-					if (SchematicRenderingRegistry.containsCompiledSchematic(schem, pos)) {
-						SchematicRenderingRegistry.rotateSchematic(schem);
-					} else {
-						SchematicRenderingRegistry.addSchematic(schem, pos, 0);
-					}
-				}
-
-				return true;
+			Schematic schem = new Schematic(stack.getDisplayName(), stack.getTagCompound());
+			if (SchematicRenderingRegistry.containsCompiledSchematic(schem, pos)) {
+				SchematicRenderingRegistry.rotateSchematic(schem);
 			} else {
-				Schematic schem = SchematicRegistry.load(SCHEMS.get(stack.getItemDamage()));
-				if (schem != null) {
-					if (SchematicRenderingRegistry.containsCompiledSchematic(schem, pos)) {
-						SchematicRenderingRegistry.rotateSchematic(schem);
-					} else {
-						SchematicRenderingRegistry.addSchematic(schem, pos, 0);
-					}
-				}
-
-				return true;
+				SchematicRenderingRegistry.addSchematic(schem, pos, 0);
 			}
+			return true;
 		}
+
 		return true;
 	}
 }

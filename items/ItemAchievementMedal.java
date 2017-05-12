@@ -3,9 +3,6 @@ package com.dyn.fixins.items;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.utils.TreeNode;
 import com.google.common.collect.Lists;
@@ -15,6 +12,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.util.BlockPos;
@@ -25,20 +23,17 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemAchievementMedal extends Item {
-	private static final Map<Integer, Pair<Integer, String>> ACHIEVEMENTS = Maps
-			.<Integer, Pair<Integer, String>>newHashMap();
-	private static final Map<String, Integer> NAME_MAP = Maps.<String, Integer>newHashMap();
+
+	private static final Map<String, Integer> RARITY_MAP = Maps.<String, Integer>newHashMap();
 
 	private static void createMappings() {
-		int counter = 0;
-		List<TreeNode<Achievement>> roots = Lists.newArrayList();
-
+		List<TreeNode<Achievement>> achTree = Lists.newArrayList();
 		for (Achievement ach : AchievementList.achievementList) {
 			if (ach.parentAchievement == null) {
-				roots.add(new TreeNode<>(ach));
+				achTree.add(new TreeNode<>(ach));
 				continue;
 			}
-			for (TreeNode<Achievement> root : roots) {
+			for (TreeNode<Achievement> root : achTree) {
 				if (ach.parentAchievement == root.data) {
 					root.addChild(ach);
 				} else {
@@ -55,30 +50,24 @@ public class ItemAchievementMedal extends Item {
 				}
 			}
 		}
-
-		for (TreeNode<Achievement> root : roots) {
+		for (TreeNode<Achievement> root : achTree) {
 			for (TreeNode<Achievement> node : root) {
 				if (node.data instanceof AchievementPlus) {
-					// its possible that a node can be special and not a leaf
-					NAME_MAP.put(((AchievementPlus) node.data).getName(), counter);
-					ACHIEVEMENTS.put(counter++,
-							new ImmutablePair<>(node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4),
-									((AchievementPlus) node.data).getName()));
+					RARITY_MAP.put(((AchievementPlus) node.data).getName(),
+							node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4));
 				} else {
-					NAME_MAP.put(node.data.getStatName().getUnformattedText(), counter);
-					ACHIEVEMENTS.put(counter++,
-							new ImmutablePair<>(node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4),
-									node.data.getStatName().getUnformattedText()));
+					RARITY_MAP.put(node.data.getStatName().getUnformattedText(),
+							node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4));
 				}
 			}
 		}
 	}
 
-	public static int getMetaFromAchievementName(String name) {
-		if (NAME_MAP.size() == 0) {
+	public static int getRarity(String name) {
+		if (RARITY_MAP.size() == 0) {
 			createMappings();
 		}
-		return NAME_MAP.get(name);
+		return RARITY_MAP.get(name);
 	}
 
 	private static int recursiveTreeSearch(TreeNode<Achievement> node) {
@@ -107,7 +96,9 @@ public class ItemAchievementMedal extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-		tooltip.add(EnumChatFormatting.GOLD + ACHIEVEMENTS.get(stack.getItemDamage()).getRight());
+		if (stack.hasTagCompound()) {
+			tooltip.add(EnumChatFormatting.GOLD + stack.getTagCompound().getString("ach_name"));
+		}
 	}
 
 	/**
@@ -117,15 +108,13 @@ public class ItemAchievementMedal extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-		int counter = 0;
-		List<TreeNode<Achievement>> roots = Lists.newArrayList();
-
+		List<TreeNode<Achievement>> achTree = Lists.newArrayList();
 		for (Achievement ach : AchievementList.achievementList) {
 			if (ach.parentAchievement == null) {
-				roots.add(new TreeNode<>(ach));
+				achTree.add(new TreeNode<>(ach));
 				continue;
 			}
-			for (TreeNode<Achievement> root : roots) {
+			for (TreeNode<Achievement> root : achTree) {
 				if (ach.parentAchievement == root.data) {
 					root.addChild(ach);
 				} else {
@@ -143,21 +132,23 @@ public class ItemAchievementMedal extends Item {
 			}
 		}
 
-		for (TreeNode<Achievement> root : roots) {
+		for (TreeNode<Achievement> root : achTree) {
 			for (TreeNode<Achievement> node : root) {
-				subItems.add(new ItemStack(itemIn, 1, counter));
+				ItemStack is = new ItemStack(itemIn);
+				NBTTagCompound tag = new NBTTagCompound();
+				String name = "";
 				if (node.data instanceof AchievementPlus) {
-					// its possible that a node can be special and not a leaf
-					NAME_MAP.put(((AchievementPlus) node.data).getName(), counter);
-					ACHIEVEMENTS.put(counter++,
-							new ImmutablePair<>(node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4),
-									((AchievementPlus) node.data).getName()));
+					name = ((AchievementPlus) node.data).getName();
 				} else {
-					NAME_MAP.put(node.data.getStatName().getUnformattedText(), counter);
-					ACHIEVEMENTS.put(counter++,
-							new ImmutablePair<>(node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4),
-									node.data.getStatName().getUnformattedText()));
+					name = node.data.getStatName().getUnformattedText();
 				}
+				tag.setString("ach_name", name);
+				int rarity = node.data.getSpecial() ? 0 : Math.min(recursiveTreeSearch(node), 4);
+				tag.setInteger("rarity", rarity);
+				is.setTagCompound(tag);
+				RARITY_MAP.put(name, rarity);
+				is.setItemDamage(rarity);
+				subItems.add(is);
 			}
 		}
 	}
@@ -169,7 +160,7 @@ public class ItemAchievementMedal extends Item {
 	 */
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		return super.getUnlocalizedName() + "_" + ACHIEVEMENTS.get(stack.getItemDamage()).getLeft();
+		return super.getUnlocalizedName() + "_" + stack.getItemDamage();
 	}
 
 	/**
