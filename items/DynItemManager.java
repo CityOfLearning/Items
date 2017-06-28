@@ -3,6 +3,7 @@ package com.dyn.fixins.items;
 import com.dyn.DYNServerMod;
 import com.dyn.fixins.DynFixinsMod;
 import com.dyn.fixins.blocks.DynBlockManager;
+import com.dyn.schematics.SchematicMod;
 import com.dyn.utils.PlayerAccessLevel;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,7 +33,6 @@ public class DynItemManager {
 	public static Item old_coin;
 	public static Item crystal;
 
-	public static Item schematic;
 	public static Item achMedal;
 	public static Item delayBlockItem;
 
@@ -88,7 +88,6 @@ public class DynItemManager {
 		OreDictionary.registerOre("ingotDemonic", DynItemManager.demonic_ingot);
 		OreDictionary.registerOre("ingotMithril", DynItemManager.mithril_ingot);
 
-		DynFixinsMod.proxy.registerItem(schematic = new ItemSchematic(), "schematic");
 		DynFixinsMod.proxy.registerItem(achMedal = new ItemAchievementMedal(), "ach_medal");
 		// DynFixinsMod.proxy.registerItemModels(achMedal, "ach_medal", 1);
 		// DynFixinsMod.proxy.registerItemModels(achMedal, "ach_medal", 2);
@@ -108,7 +107,7 @@ public class DynItemManager {
 		DynFixinsMod.proxy.registerItemModels(manual, manual.getUnlocalizedName(), 0);
 
 		if (DYNServerMod.developmentEnvironment || (DYNServerMod.accessLevel != PlayerAccessLevel.STUDENT)) {
-			schematic.setCreativeTab(DynFixinsMod.dynTab);
+			SchematicMod.schematic.setCreativeTab(DynFixinsMod.dynTab);
 			achMedal.setCreativeTab(DynFixinsMod.dynTab);
 			manual.setCreativeTab(DynFixinsMod.dynTab);
 		}
