@@ -7,6 +7,7 @@ import com.forgeessentials.commons.MobTypeRegistry;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -82,7 +83,7 @@ public class ProximityBlockTileEntity extends TileEntity {
 			}
 			// Check for other creatures
 			if ((entity instanceof EntityAnimal) || (entity instanceof EntityAmbientCreature)
-					|| (entity instanceof EntitySquid)) {
+					|| (entity instanceof EntitySquid) || (entity instanceof EntityCreature)) {
 				return true;
 			}
 			if (MobTypeRegistry.getCollectionForMobType(EnumMobType.PASSIVE).contains(className)) {
