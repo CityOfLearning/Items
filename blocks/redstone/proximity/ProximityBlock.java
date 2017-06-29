@@ -23,8 +23,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ProximityBlock extends Block implements ITileEntityProvider {
 
@@ -69,6 +73,12 @@ public class ProximityBlock extends Block implements ITileEntityProvider {
 		return new ProximityBlockTileEntity();
 	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumWorldBlockLayer getBlockLayer() {
+		return EnumWorldBlockLayer.CUTOUT;
+	}
+
 	/**
 	 * Convert the BlockState into the correct metadata value
 	 */
@@ -96,6 +106,20 @@ public class ProximityBlock extends Block implements ITileEntityProvider {
 	@Override
 	public int getWeakPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side) {
 		return state.getValue(POWERED).booleanValue() ? 15 : 0;
+	}
+
+	@Override
+	public boolean isFullCube() {
+		return false;
+	}
+
+	// used by the renderer to control lighting and visibility of other blocks.
+	// set to true because this block is opaque and occupies the entire 1x1x1
+	// space
+	// not strictly required because the default (super method) is true
+	@Override
+	public boolean isOpaqueCube() {
+		return false;
 	}
 
 	public void notifyNeighbors(World worldIn, BlockPos pos) {
@@ -137,6 +161,17 @@ public class ProximityBlock extends Block implements ITileEntityProvider {
 			tileEntityData.setCorners(10, 4, 10);
 			tileEntityData.setValidMob(EnumMobType.PLAYER);
 			worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
+		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		if (state.getValue(POWERED)) {
+			double d0 = pos.getX() + 0.4F + (rand.nextFloat() * 0.2D);
+			double d1 = pos.getY() + 0.6F + (rand.nextFloat() * 0.3D);
+			double d2 = pos.getZ() + 0.4F + (rand.nextFloat() * 0.2D);
+			worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0.0D, 0.0D, 0.0D, new int[0]);
 		}
 	}
 
