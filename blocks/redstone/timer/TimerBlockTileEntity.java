@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 public class TimerBlockTileEntity extends TileEntity {
 
 	private int time = 20;
+	private float remainder = 0;
 
 	@Override
 	public Packet getDescriptionPacket() {
@@ -22,6 +23,16 @@ public class TimerBlockTileEntity extends TileEntity {
 
 	public int getTimer() {
 		return time;
+	}
+
+	public int getTimerIterval() {
+		int interval = time / 8;
+		remainder += (time / 8.0F) - interval;
+		if (remainder > 0) {
+			interval += remainder;
+			remainder = 0;
+		}
+		return interval;
 	}
 
 	public void markForUpdate() {

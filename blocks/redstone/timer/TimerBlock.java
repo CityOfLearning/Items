@@ -11,6 +11,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,17 +20,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TimerBlock extends Block implements ITileEntityProvider {
 
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
+	public static final PropertyInteger TICK = PropertyInteger.create("tick", 0, 7);
 
 	public TimerBlock() {
 		super(Material.circuits);
-		setDefaultState(blockState.getBaseState().withProperty(POWERED, Boolean.valueOf(false)));
+		setDefaultState(blockState.getBaseState().withProperty(POWERED, Boolean.valueOf(false)).withProperty(TICK, 0));
 		setBlockUnbreakable();
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 	}
 
 	@Override
@@ -52,7 +59,7 @@ public class TimerBlock extends Block implements ITileEntityProvider {
 
 	@Override
 	protected BlockState createBlockState() {
-		return new BlockState(this, new IProperty[] { POWERED });
+		return new BlockState(this, new IProperty[] { POWERED, TICK });
 	}
 
 	/**
@@ -64,12 +71,18 @@ public class TimerBlock extends Block implements ITileEntityProvider {
 		return new TimerBlockTileEntity();
 	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumWorldBlockLayer getBlockLayer() {
+		return EnumWorldBlockLayer.CUTOUT;
+	}
+
 	/**
 	 * Convert the BlockState into the correct metadata value
 	 */
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		int i = 0;
+		int i = state.getValue(TICK).intValue();
 
 		if (state.getValue(POWERED).booleanValue()) {
 			i |= 8;
@@ -80,7 +93,7 @@ public class TimerBlock extends Block implements ITileEntityProvider {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(POWERED, Boolean.valueOf((meta & 8) > 0));
+		return getDefaultState().withProperty(POWERED, Boolean.valueOf((meta & 8) > 0)).withProperty(TICK, meta & 7);
 	}
 
 	@Override
@@ -91,6 +104,20 @@ public class TimerBlock extends Block implements ITileEntityProvider {
 	@Override
 	public int getWeakPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side) {
 		return state.getValue(POWERED).booleanValue() ? 15 : 0;
+	}
+
+	@Override
+	public boolean isFullCube() {
+		return false;
+	}
+
+	// used by the renderer to control lighting and visibility of other blocks.
+	// set to true because this block is opaque and occupies the entire 1x1x1
+	// space
+	// not strictly required because the default (super method) is true
+	@Override
+	public boolean isOpaqueCube() {
+		return false;
 	}
 
 	private void notifyNeighbors(World worldIn, BlockPos pos) {
@@ -135,20 +162,31 @@ public class TimerBlock extends Block implements ITileEntityProvider {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		if (state.getValue(POWERED)) {
+			double d0 = pos.getX() + rand.nextFloat();
+			double d1 = pos.getY() + .1F + (rand.nextFloat() * 0.2D);
+			double d2 = pos.getZ() + rand.nextFloat();
+			worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0.0D, 0.0D, 0.0D, new int[0]);
+		}
+	}
+
+	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 		super.updateTick(worldIn, pos, state, rand);
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 		if (tileentity instanceof TimerBlockTileEntity) {
-			if (!state.getValue(POWERED).booleanValue()) {
+			if (!state.getValue(POWERED).booleanValue() && (state.getValue(TICK).intValue() == 7)) {
 				// emit redstone signal
 				worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)), 3);
 				notifyNeighbors(worldIn, pos);
 				// vanilla tick rate
 				worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
 			} else {
-				worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)), 3);
+				worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)).cycleProperty(TICK), 3);
 				notifyNeighbors(worldIn, pos);
-				worldIn.scheduleUpdate(pos, this, ((TimerBlockTileEntity) tileentity).getTimer());
+				worldIn.scheduleUpdate(pos, this, ((TimerBlockTileEntity) tileentity).getTimerIterval());
 			}
 		}
 	}
