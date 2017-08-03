@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 import com.dyn.DYNServerMod;
 import com.dyn.fixins.entity.crash.CrashTestEntity;
 import com.dyn.fixins.entity.ghost.GhostEntity;
-import com.dyn.render.RenderMod;
 import com.dyn.robot.entity.DynRobotEntity;
 import com.google.common.collect.Maps;
 import com.rabbit.gui.component.display.entity.DisplayEntity;
@@ -122,6 +121,7 @@ public class DecisionBlockTileEntity extends TileEntity {
 	private String text = "placeholder";
 	private boolean isQuiz = false;
 	private boolean isActive = true;
+	private boolean isRetriggerable = false;
 
 	private Map<String, Choice> choices = Maps.newHashMap();
 
@@ -169,6 +169,10 @@ public class DecisionBlockTileEntity extends TileEntity {
 		return isQuiz;
 	}
 
+	public boolean isRetriggerable() {
+		return isRetriggerable;
+	}
+
 	public void markForUpdate() {
 		worldObj.markBlockForUpdate(pos);
 		markDirty();
@@ -191,6 +195,8 @@ public class DecisionBlockTileEntity extends TileEntity {
 		entitySkin = compound.getString("skin");
 
 		isQuiz = compound.getBoolean("quiz");
+
+		isRetriggerable = compound.getBoolean("retrigger");
 
 		choices.clear();
 
@@ -275,21 +281,13 @@ public class DecisionBlockTileEntity extends TileEntity {
 		this.isQuiz = isQuiz;
 	}
 
+	public void setRetriggerable(boolean isRetriggerable) {
+		this.isRetriggerable = isRetriggerable;
+	}
+
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
 		return (oldState.getBlock() != newSate.getBlock());
-	}
-
-	public void updatePlayerStatus() {
-		if (isQuiz) {
-			if (isActive) {
-				RenderMod.proxy.openDecisionGui(entity, this);
-				isActive = false;
-			}
-		} else if (isActive) {
-			RenderMod.proxy.openDecisionGui(entity, this);
-			isActive = false;
-		}
 	}
 
 	@Override
@@ -304,6 +302,7 @@ public class DecisionBlockTileEntity extends TileEntity {
 		compound.setInteger("tileZ2", corner2.getZ());
 		compound.setString("skin", entitySkin);
 		compound.setBoolean("quiz", isQuiz);
+		compound.setBoolean("retrigger", isRetriggerable);
 
 		NBTTagList nbttaglist = new NBTTagList();
 		for (String choice : choices.keySet()) {

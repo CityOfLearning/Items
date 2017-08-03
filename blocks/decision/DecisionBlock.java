@@ -159,7 +159,8 @@ public class DecisionBlock extends Block implements ITileEntityProvider {
 	public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 		if (Minecraft.getMinecraft().inGameHasFocus) {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
-			if (tileentity instanceof DecisionBlockTileEntity) {
+			if ((tileentity instanceof DecisionBlockTileEntity) && (((DecisionBlockTileEntity) tileentity).isActive()
+					|| (((DecisionBlockTileEntity) tileentity).isRetriggerable()))) {
 				BlockPos c1 = ((DecisionBlockTileEntity) tileentity).getCorner1();
 				BlockPos c2 = ((DecisionBlockTileEntity) tileentity).getCorner2();
 				if ((c1 != null) && (c2 != null)) {
@@ -167,10 +168,14 @@ public class DecisionBlock extends Block implements ITileEntityProvider {
 							AxisAlignedBB.fromBounds(pos.getX() - c1.getX(), pos.getY() - c1.getY(),
 									pos.getZ() - c1.getZ(), pos.getX() + c2.getX(), pos.getY() + c2.getY(),
 									pos.getZ() + c2.getZ()));
-					for (EntityPlayer player : players) {
-						if (Minecraft.getMinecraft().thePlayer == player) {
-							((DecisionBlockTileEntity) tileentity).updatePlayerStatus();
-						}
+					if (!((DecisionBlockTileEntity) tileentity).isActive()
+							&& ((DecisionBlockTileEntity) tileentity).isRetriggerable()
+							&& !players.contains(Minecraft.getMinecraft().thePlayer)) {
+						((DecisionBlockTileEntity) tileentity).setActive(true);
+					} else if (((DecisionBlockTileEntity) tileentity).isActive()
+							&& players.contains(Minecraft.getMinecraft().thePlayer)) {
+						RenderMod.proxy.openDecisionGui(((DecisionBlockTileEntity) tileentity).getEntity(),
+								(DecisionBlockTileEntity) tileentity);
 					}
 				}
 			}
