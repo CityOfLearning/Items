@@ -82,10 +82,6 @@ public class DynBlockManager {
 				.setCreativeTab(DynFixinsMod.dynTab);
 		GameRegistry.registerBlock(studentTimerBlock, "student_timer_block");
 
-		// arrowBlock = (new
-		// BlockArrowSign().setUnlocalizedName("arrow_block")).setCreativeTab(dynTab);
-		// GameRegistry.registerBlock(arrowBlock, "arrow_block");
-
 		delayBlock = new DelaySignalBlock(true).setUnlocalizedName("delay_block").setHardness(0.0F)
 				.setStepSound(Block.soundTypeWood);
 		GameRegistry.registerBlock(delayBlock, "delay_block");
