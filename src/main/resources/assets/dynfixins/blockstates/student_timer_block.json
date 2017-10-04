@@ -1,0 +1,21 @@
+{
+    "variants": {
+        "normal": { "model": "dynfixins:student_timer_block" },
+        "powered=true,tick=0":  { "model": "dynfixins:student_timer_block2"},
+        "powered=false,tick=0":  { "model": "dynfixins:student_timer_block2"},
+        "powered=true,tick=1":  { "model": "dynfixins:student_timer_block3"},
+        "powered=false,tick=1":  { "model": "dynfixins:student_timer_block3"},
+        "powered=true,tick=2":  { "model": "dynfixins:student_timer_block4"},
+        "powered=false,tick=2":  { "model": "dynfixins:student_timer_block4"},
+        "powered=true,tick=3":  { "model": "dynfixins:student_timer_block5"},
+        "powered=false,tick=3":  { "model": "dynfixins:student_timer_block5"},
+        "powered=true,tick=4":  { "model": "dynfixins:student_timer_block6"},
+        "powered=false,tick=4":  { "model": "dynfixins:student_timer_block6"},
+        "powered=true,tick=5":  { "model": "dynfixins:student_timer_block7"},
+        "powered=false,tick=5":  { "model": "dynfixins:student_timer_block7"},
+        "powered=true,tick=6":  { "model": "dynfixins:student_timer_block8"},
+        "powered=false,tick=6":  { "model": "dynfixins:student_timer_block8"},
+        "powered=true,tick=7":  { "model": "dynfixins:student_timer_block"},
+        "powered=false,tick=7":  { "model": "dynfixins:student_timer_block"}
+    }
+}

@@ -1,0 +1,16 @@
+[
+{
+  "modid": "dynfixins",
+  "name": "Digital Youth Fixins",
+  "description": "Some utility items and blocks",
+  "version": "1",
+  "mcversion": "1.8.9",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Dom Amato"],
+  "credits": "Digital Youth Network",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

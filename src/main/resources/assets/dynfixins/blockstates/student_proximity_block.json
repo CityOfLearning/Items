@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "normal": { "model": "dynfixins:student_proximity_block" },
+        "powered=true":  { "model": "dynfixins:student_proximity_block"},
+        "powered=false":  { "model": "dynfixins:student_proximity_block_off"}
+    }
+}

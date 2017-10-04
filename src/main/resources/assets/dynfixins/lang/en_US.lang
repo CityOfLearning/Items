@@ -1,0 +1,29 @@
+tile.student_command_block.name=Student Command Block
+tile.dialog_block.name=Admin Dialog Block
+tile.student_dialog_block.name=Dialog Block
+tile.proximity_block.name=Admin Proximity Block
+tile.student_proximity_block.name=Proximity Block
+tile.timer_block.name=Admin Timer Block
+tile.student_timer_block.name=Timer Block
+tile.decision_block.name=Decision Block
+tile.rs_latch.name=Redstone Latch
+tile.delay_block.name=Redstone Buffer
+tile.delay_block_off.name=Redstone Buffer
+tile.indication_lamp_on.name=Redstone Indicator
+tile.indication_lamp_off.name=Redstone Indicator
+
+entity.dynfixins.dynCrashTestEntity.name=Crash Test Dummy
+entity.dynfixins.dynGhostEntity.name=Ghost
+
+itemGroup.robotab=Robot Components
+itemGroup.dynit=DYN Utility Items
+
+item.ach_medal.name=Achievement Medal
+item.ach_medal_0.name=Achievement Medal
+item.ach_medal_1.name=Achievement Medal
+item.ach_medal_2.name=Achievement Medal
+item.ach_medal_3.name=Achievement Medal
+item.ach_medal_4.name=Achievement Medal
+item.delay_diode.name=Redstone Buffer
+item.latch_diode.name=Redstone Latch
+item.dyn_logo.name=DYN LOGO

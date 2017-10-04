@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "facing=south,locked=false,powered=true": { "model": "repeater_on_1tick" },
+        "facing=west,locked=false,powered=true": { "model": "repeater_on_1tick", "y": 90 },
+        "facing=north,locked=false,powered=true": { "model": "repeater_on_1tick", "y": 180 },
+        "facing=east,locked=false,powered=true": { "model": "repeater_on_1tick", "y": 270 },
+        "facing=south,locked=true,powered=true": { "model": "repeater_on_locked_1tick" },
+        "facing=west,locked=true,powered=true": { "model": "repeater_on_locked_1tick", "y": 90 },
+        "facing=north,locked=true,powered=true": { "model": "repeater_on_locked_1tick", "y": 180 },
+        "facing=east,locked=true,powered=true": { "model": "repeater_on_locked_1tick", "y": 270 },
+        "facing=south,locked=false,powered=false": { "model": "repeater_1tick" },
+        "facing=west,locked=false,powered=false": { "model": "repeater_1tick", "y": 90 },
+        "facing=north,locked=false,powered=false": { "model": "repeater_1tick", "y": 180 },
+        "facing=east,locked=false,powered=false": { "model": "repeater_1tick", "y": 270 },
+        "facing=south,locked=true,powered=false": { "model": "repeater_locked_1tick" },
+        "facing=west,locked=true,powered=false": { "model": "repeater_locked_1tick", "y": 90 },
+        "facing=north,locked=true,powered=false": { "model": "repeater_locked_1tick", "y": 180 },
+        "facing=east,locked=true,powered=false": { "model": "repeater_locked_1tick", "y": 270 }
+    }
+}

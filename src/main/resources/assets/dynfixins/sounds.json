@@ -1,0 +1,6 @@
+{
+    "mob.ghost.ambient": {
+        "category": "neutral",
+        "sounds": ["ghost/spooky1", "ghost/spooky2", "ghost/spooky3", "ghost/spooky4", "ghost/spooky5"]
+    }
+}

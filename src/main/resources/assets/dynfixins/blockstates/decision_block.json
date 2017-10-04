@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "normal": { "model": "dynfixins:decision_block" },
+        "powered=true":  { "model": "dynfixins:decision_block"},
+        "powered=false":  { "model": "dynfixins:decision_block"}
+    }
+}
