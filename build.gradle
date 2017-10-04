@@ -40,7 +40,7 @@ aws {
 
 def myBucketName = 'broad-participation'
 
-version = "1"
+version = "1.0"
 group= "com.dyn" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "Fixins"
 
@@ -61,7 +61,7 @@ minecraft {
 }
 
 dependencies {
-        compile 'com.github.CityOfLearning:rabbit-gui:1.8.9-SNAPSHOT'
+    compile 'com.github.CityOfLearning:rabbit-gui:1.8.9-SNAPSHOT'
 }
 
 processResources
